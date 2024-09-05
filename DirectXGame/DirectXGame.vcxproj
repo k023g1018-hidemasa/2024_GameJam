@@ -110,6 +110,7 @@
     <ClCompile Include="3d\WorldTransform.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
+    <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapchipField.cpp" />
@@ -117,6 +118,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="Skydome.cpp" />
+    <ClCompile Include="Vector3f.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\ImGuiManager.h" />
@@ -142,6 +144,7 @@
     <ClInclude Include="base\StringUtility.h" />
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
+    <ClInclude Include="CameraController.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="MapchipField.h" />
@@ -153,6 +156,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="Skydome.h" />
+    <ClInclude Include="Vector3f.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">

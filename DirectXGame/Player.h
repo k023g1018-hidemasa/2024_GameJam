@@ -32,7 +32,16 @@ public:
 	/// 描画処理
 	/// </summary>
 	void Draw();
-
+	/// <summary>
+	/// velocityを取得
+	/// </summary>
+	/// <returns></returns>
+	Vector3 GetVelocity() { return velocity_; }
+	/// <summary>
+	/// worldTransformを取得
+	/// </summary>
+	/// <returns></returns>
+	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 private:
 	WorldTransform worldTransform_;
 	/// <summary>

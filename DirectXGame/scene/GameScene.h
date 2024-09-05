@@ -14,6 +14,7 @@ class MapChipField;
 class Player;
 class Skydome;
 class Ground;
+class CameraController;
 
 /// <summary>
 /// ゲームシーン
@@ -79,4 +80,7 @@ private: // メンバ変数
 
 	Model* model_ = nullptr;
 	Player* player_ = nullptr;
+
+	//カメラコントローラ
+	CameraController* cameraController_ = nullptr;
 };

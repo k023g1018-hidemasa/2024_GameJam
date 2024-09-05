@@ -3,13 +3,11 @@
 #include <cassert>
 #include "ViewProjection.h"
 #include "player.h"
-#include "MTFunction.h"
 #include "MapchipField.h"
 #include "Model.h"
 #include "Skydome.h"
 #include "Ground.h"
-
-// #include"ViewProjection.h"
+#include "CameraController.h"
 
 GameScene::GameScene() {}
 
@@ -32,6 +30,7 @@ GameScene::~GameScene() {
 	delete player_;
 	delete modelGround_;
 	delete ground_;
+	delete cameraController_;
 }
 
 void GameScene::Initialize() {
@@ -70,6 +69,13 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	player_->Initialize(model_, &viewProjection_);
+
+	//カメラ初期化
+	cameraController_ = new CameraController();
+	cameraController_->Initialize(&viewProjection_);
+	cameraController_->SetTarget(player_);
+	cameraController_->SetMovableArea({ -20.0f, 20.0f, 10.0f,60.0f });
+	cameraController_->Reset();
 }
 
 void GameScene::Update() {
@@ -108,6 +114,7 @@ void GameScene::Update() {
 
 	// 自キャラの更sin
 	player_->Update();
+	cameraController_->Update();
 }
 
 void GameScene::Draw() {
