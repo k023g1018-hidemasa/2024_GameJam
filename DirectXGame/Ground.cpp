@@ -14,6 +14,7 @@ void Ground::Initialize(Model* model, ViewProjection* viewProjection){
 	viewProjection_ = viewProjection;
 	worldTransform_.rotation_.x = -float(pi / 2.0f);
 	worldTransform_.scale_ = { 20.0f,20.0f,20.0f };
+	worldTransform_.translation_.y = 1.0f;
 }
 
 void Ground::Update(){
