@@ -15,8 +15,7 @@ public:
 	static const float kViewPortTopLeftY;
 	static const float kViewPortWidth;
 	static const float kViewPortHeight;
-	static const float k
-		Distance;
+	static const float kDistance;
 
 	// モデル名
 	static const std::string kModelName;
