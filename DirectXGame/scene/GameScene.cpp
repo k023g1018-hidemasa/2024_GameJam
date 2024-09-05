@@ -1,6 +1,13 @@
 #include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
+#include "ViewProjection.h"
+#include "player.h"
+#include "MTFunction.h"
+#include "MapchipField.h"
+#include "Model.h"
+#include "Skydome.h"
+#include "Ground.h"
 
 // #include"ViewProjection.h"
 
@@ -20,11 +27,11 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 	// 破壊と創造はセットで
 	delete modelSkydome_;
-
 	delete mapChipField_;
-
 	delete model_;
 	delete player_;
+	delete modelGround_;
+	delete ground_;
 }
 
 void GameScene::Initialize() {
@@ -45,7 +52,12 @@ void GameScene::Initialize() {
 	skydome_ = new Skydome;
 	skydome_->Initialize(modelSkydome_, &viewProjection_);
 
-	mapChipField_ = new MapChipField;
+	//地面
+	ground_ = new Ground();
+	modelGround_ = Model::CreateFromOBJ("Ground", true);
+	ground_->Initialize(modelGround_, &viewProjection_);
+
+	mapChipField_ = new MapChipField();
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 	// ｃｓｖを通った後にジェネレイトをする
 	GenerateBlocks();
@@ -94,6 +106,7 @@ void GameScene::Update() {
 #endif // _DEBUG
 
 	skydome_->Update();
+	ground_->Update();
 
 	// 自キャラの更sin
 	player_->Update();
@@ -123,7 +136,7 @@ void GameScene::Draw() {
 	Model::PreDraw(commandList);
 
 	skydome_->Draw();
-	// modelSkydome_->Draw(worldTransform_, viewProjection_);
+	ground_->Draw();
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {

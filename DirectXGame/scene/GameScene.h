@@ -4,15 +4,16 @@
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
 #include "Input.h"
-#include "MTFunction.h"
-#include "MapchipField.h"
-#include "Model.h"
-#include "Skydome.h"
 #include "Sprite.h"
-#include "ViewProjection.h"
-#include "WorldTransform.h"
-#include "player.h"
 #include <vector>
+#include "WorldTransform.h"
+
+class Model;
+class ViewProjection;
+class MapChipField;
+class Player;
+class Skydome;
+class Ground;
 
 /// <summary>
 /// ゲームシーン
@@ -67,6 +68,10 @@ private: // メンバ変数
 	// これの名前で呼び出せばｈにあるやつは使えるからわかりやすく？
 	Skydome* skydome_ = nullptr;
 	Model* modelSkydome_ = nullptr;
+	
+	//地面用
+	Ground* ground_ = nullptr;
+	Model* modelGround_ = nullptr;
 
 	MapChipField* mapChipField_;
 	// キャラクターのテクスチャ
