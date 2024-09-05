@@ -6,15 +6,14 @@ Player::Player() {}
 
 Player::~Player() {} // 未定義、参照されてないは関数の作り忘れ
 
-void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
+void Player::Initialize(Model* model, ViewProjection* viewProjection) {
 	assert(model);
 	model_ = model;
 	//	textureHandle_ = textureHandle;
 	worldTransform_.Initialize();
 	// 行列を定数バッファに転送//定数バッファ＝グラボ
 	viewProjection_ = viewProjection;
-
-	worldTransform_.translation_ = position;
+	worldTransform_.translation_ = { 2.0f,2.0f,0.0f }; //modelのサイズは2.0f x 2.0fので
 	// 初期回転角の指定//Y軸を90度右に回転、2π
 	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
 }

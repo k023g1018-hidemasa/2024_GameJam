@@ -23,7 +23,7 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~Player();
-	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
+	void Initialize(Model* model, ViewProjection* viewProjection);
 	/// <summary>
 	/// 更新処理
 	/// </summary>
