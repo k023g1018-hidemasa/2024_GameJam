@@ -9,7 +9,7 @@
 void Ground::Initialize(Model* model, ViewProjection* viewProjection){
 	float pi = float(PI);
 	assert(model);
-	model_ = model;
+	modelPlayer_ = model;
 	worldTransform_.Initialize();
 	viewProjection_ = viewProjection;
 	worldTransform_.rotation_.x = -float(pi / 2.0f);
@@ -22,5 +22,5 @@ void Ground::Update(){
 }
 
 void Ground::Draw(){
-	model_->Draw(worldTransform_, *viewProjection_);
+	modelPlayer_->Draw(worldTransform_, *viewProjection_);
 }

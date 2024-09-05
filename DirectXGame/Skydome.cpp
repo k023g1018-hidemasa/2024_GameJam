@@ -3,7 +3,7 @@
 void Skydome::Initialize(Model* model, ViewProjection* viewProjection) {
 
 	assert(model);
-	model_ = model;
+	modelPlayer_ = model;
 	//textureHandle_ = textureHandle;//この辺はセッタのやつ
 	worldTransform_.Initialize();//これは関数を呼んでる？なにしてんだ？
     //行列をバッファに
@@ -15,7 +15,7 @@ void Skydome::Update() {
 
 void Skydome::Draw() {
 	//ドロうの中身の定義
-	model_->Draw(worldTransform_
+	modelPlayer_->Draw(worldTransform_
 		,*viewProjection_//ここだけ配列（ポインタにしてんのはなんで）多分ビュープロが行列になってるから？
 	);
 }

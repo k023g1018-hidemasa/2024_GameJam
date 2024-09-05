@@ -8,7 +8,7 @@ Player::~Player() {} // 未定義、参照されてないは関数の作り忘�
 
 void Player::Initialize(Model* model, ViewProjection* viewProjection) {
 	assert(model);
-	model_ = model;
+	modelPlayer_ = model;
 	//	textureHandle_ = textureHandle;
 	worldTransform_.Initialize();
 	// 行列を定数バッファに転送//定数バッファ＝グラボ
@@ -129,7 +129,7 @@ void Player::Update() {
 }
 
 void Player::Draw() {
-	model_->Draw(worldTransform_, *viewProjection_, textureHandle_);
+	modelPlayer_->Draw(worldTransform_, *viewProjection_, textureHandle_);
 	/*ImGui::Begin("window");
 	ImGui::InputFloat3("Velocity", &velocity_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
 	ImGui::End();*/

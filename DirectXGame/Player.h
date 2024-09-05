@@ -47,7 +47,7 @@ private:
 	/// <summary>
 	/// モデル//一旦預かるだけ
 	/// </summary>
-	Model* model_ = nullptr;
+	Model* modelPlayer_ = nullptr;
 	ViewProjection* viewProjection_ = nullptr;
 	/// <summary>
 	/// テクスチャハンドル

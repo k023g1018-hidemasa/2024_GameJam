@@ -3,7 +3,6 @@
 #include <cassert>
 #include "ViewProjection.h"
 #include "player.h"
-#include "MapchipField.h"
 #include "Model.h"
 #include "Skydome.h"
 #include "Ground.h"
@@ -12,24 +11,13 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-
-	delete blockModel_;
-	delete skydome_;
-
-	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
-		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
-			delete worldTransformBlock;
-		}
-		worldTransformBlocks_.clear();
-	}
 	delete debugCamera_;
-	// 破壊と創造はセットで
 	delete modelSkydome_;
-	delete mapChipField_;
-	delete model_;
-	delete player_;
+	delete skydome_;
 	delete modelGround_;
 	delete ground_;
+	delete modelPlayer_;
+	delete player_;
 	delete cameraController_;
 }
 
@@ -39,37 +27,24 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	blockModel_ = Model::Create();
-	blockTextureHandle_ = TextureManager::Load("cube/cube.jpg");
-
 	viewProjection_.Initialize();
-
+	worldTransform_.Initialize();
+	
 	debugCamera_ = new DebugCamera(1280, 720);
-
 	// 天球を内部的に作る
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 	skydome_ = new Skydome;
 	skydome_->Initialize(modelSkydome_, &viewProjection_);
-
 	//地面
 	ground_ = new Ground();
 	modelGround_ = Model::CreateFromOBJ("Ground", true);
 	ground_->Initialize(modelGround_, &viewProjection_);
-
-	mapChipField_ = new MapChipField();
-	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
-	// ｃｓｖを通った後にジェネレイトをする
-	GenerateBlocks();
-
-	texturHandle_ = TextureManager::Load("sample.png"); // キャラ画像淹れる
-	model_ = Model::Create();
-	worldTransform_.Initialize();
-
+	//プレイヤー
+	modelPlayer_ = Model::Create();
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
-	player_->Initialize(model_, &viewProjection_);
-
+	player_->Initialize(modelPlayer_, &viewProjection_);
 	//カメラ初期化
 	cameraController_ = new CameraController();
 	cameraController_->Initialize(&viewProjection_);
@@ -79,20 +54,7 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-
-	// ブロックの更新
-	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
-		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
-			if (!worldTransformBlock) {
-				continue;
-			}
-			worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
-			// 定数バッファに転送
-			worldTransformBlock->TransferMatrix();
-		}
-	}
 #ifdef _DEBUG
-
 	if (input_->TriggerKey(DIK_0)) {
 		isDebugCameraActive_ ^= true;
 	}
@@ -106,13 +68,10 @@ void GameScene::Update() {
 	} else {
 		viewProjection_.UpdateMatrix();
 	}
-
 #endif // _DEBUG
 
 	skydome_->Update();
 	ground_->Update();
-
-	// 自キャラの更sin
 	player_->Update();
 	cameraController_->Update();
 }
@@ -142,16 +101,6 @@ void GameScene::Draw() {
 
 	skydome_->Draw();
 	ground_->Draw();
-
-	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
-		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
-			if (!worldTransformBlock) {
-				continue;
-			}
-			blockModel_->Draw(*worldTransformBlock, viewProjection_, blockTextureHandle_);
-		}
-	}
-	// 自キャラの描画
 	player_->Draw();
 
 	/// <summary>
@@ -174,34 +123,4 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
-}
-
-void GameScene::GenerateBlocks() {
-
-	// 要素数,ここ変えれば配置する数が変わる
-	// 要素数
-	// バーティ縦ホリゾン横
-	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
-	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
-
-	// 要素数を変更
-	// 列数を設定(縦方向のブロック数)
-	worldTransformBlocks_.resize(numBlockVirtical);
-	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
-		// 1列の要素数を設定（横方向のブロック数）
-		worldTransformBlocks_[i].resize(numBlockHorizontal);
-	}
-	// ブロックの生成
-	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
-		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
-			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
-				WorldTransform* worldTransform = new WorldTransform();
-				worldTransform->Initialize();
-				worldTransformBlocks_[i][j] = worldTransform;
-				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMaoChipPositionByIndex(j, i);
-			}
-		}
-	}
-	// 要素数を変更する、可変長は最初はゼロだからつ要素を作っている（ｎｗＵ）
-	worldTransformBlocks_.resize(numBlockHorizontal);
 }
