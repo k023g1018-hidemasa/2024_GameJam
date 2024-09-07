@@ -1,24 +1,24 @@
 #pragma once
-
+#include "Input.h"
+#include "Sprite.h"
 #include "Audio.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
-#include "Input.h"
-#include "MTFunction.h"
-#include "MapchipField.h"
-#include "Model.h"
-#include "Skydome.h"
-#include "Sprite.h"
-#include "ViewProjection.h"
-#include "WorldTransform.h"
-#include "player.h"
 #include <vector>
 #include"Reaf.h"
+#include "WorldTransform.h"
+#include "SceneBase.h"
 
+class Model;
+class ViewProjection;
+class Player;
+class Skydome;
+class Ground;
+class CameraController;
 /// <summary>
 /// ゲームシーン
 /// </summary>
-class GameScene {
+class GameScene : public SceneBase{
 
 public: // メンバ関数
 	/// <summary>
@@ -29,56 +29,45 @@ public: // メンバ関数
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~GameScene();
+	~GameScene() override;
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize() override;
 
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update();
+	void Update() override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
-
-	void GenerateBlocks();
-
+	void Draw() override;
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
-
-	Model* blockModel_ = nullptr;
-	uint32_t blockTextureHandle_ = 0u;
-	// 要素数が分からないから(可変できる配列)、多分ふぉｒで回してブロックの数文っていうやり方？
-	// ：の後ろを参照して消す：の前が一個ずつずらしてくれる、とりあえず全部に命令できる
-	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
-
+	//ゲームシーン
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
 
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
-
 	// これの名前で呼び出せばｈにあるやつは使えるからわかりやすく？
-	Skydome* skydome_ = nullptr;
 	Model* modelSkydome_ = nullptr;
-
-	MapChipField* mapChipField_;
+	Skydome* skydome_ = nullptr;
+	//地面用
+	Model* modelGround_ = nullptr;
+	Ground* ground_ = nullptr;
 	// キャラクターのテクスチャ
-	uint32_t texturHandle_ = 0;
-
-	Model* model_ = nullptr;
+	Model* modelPlayer_ = nullptr;
 	Player* player_ = nullptr;
 	//リーフのテクスチャハンドルとか
 	Model* reafModel_ = nullptr;
 	std::list<Reaf*> reafs_;
 	static inline const int32_t kReafNumber = 5;
-
-
+	//カメラコントローラ
+	CameraController* cameraController_ = nullptr;
 };

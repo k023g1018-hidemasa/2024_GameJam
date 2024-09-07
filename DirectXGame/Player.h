@@ -23,7 +23,7 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~Player();
-	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
+	void Initialize(Model* model, ViewProjection* viewProjection);
 	/// <summary>
 	/// 更新処理
 	/// </summary>
@@ -32,13 +32,22 @@ public:
 	/// 描画処理
 	/// </summary>
 	void Draw();
-
+	/// <summary>
+	/// velocityを取得
+	/// </summary>
+	/// <returns></returns>
+	Vector3 GetVelocity() { return velocity_; }
+	/// <summary>
+	/// worldTransformを取得
+	/// </summary>
+	/// <returns></returns>
+	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 private:
 	WorldTransform worldTransform_;
 	/// <summary>
 	/// モデル//一旦預かるだけ
 	/// </summary>
-	Model* model_ = nullptr;
+	Model* modelPlayer_ = nullptr;
 	ViewProjection* viewProjection_ = nullptr;
 	/// <summary>
 	/// テクスチャハンドル

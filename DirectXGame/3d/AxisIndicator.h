@@ -15,7 +15,7 @@ public:
 	static const float kViewPortTopLeftY;
 	static const float kViewPortWidth;
 	static const float kViewPortHeight;
-	static const float kCameraDistance;
+	static const float kDistance;
 
 	// モデル名
 	static const std::string kModelName;
@@ -62,7 +62,7 @@ private:
 	// DirectX基盤
 	DirectXCommon* dxCommon_ = nullptr;
 	// モデル
-	std::unique_ptr<Model> model_;
+	std::unique_ptr<Model> modelPlayer_;
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
 	// ワールドトランスフォーム
