@@ -1,12 +1,12 @@
 #pragma once
-
+#include "Input.h"
+#include "Sprite.h"
 #include "Audio.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
-#include "Input.h"
-#include "Sprite.h"
 #include <vector>
 #include "WorldTransform.h"
+#include "SceneBase.h"
 
 class Model;
 class ViewProjection;
@@ -18,7 +18,7 @@ class CameraController;
 /// <summary>
 /// ゲームシーン
 /// </summary>
-class GameScene {
+class GameScene : public SceneBase{
 
 public: // メンバ関数
 	/// <summary>
@@ -29,23 +29,22 @@ public: // メンバ関数
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~GameScene();
+	~GameScene() override;
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize() override;
 
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update();
+	void Update() override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
-	void GenerateBlocks();
+	void Draw() override;
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;

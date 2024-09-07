@@ -54,21 +54,21 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-#ifdef _DEBUG
-	if (input_->TriggerKey(DIK_0)) {
-		isDebugCameraActive_ ^= true;
-	}
-
-	if (isDebugCameraActive_) {
-		debugCamera_->Update();
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-
-		viewProjection_.TransferMatrix();
-	} else {
-		viewProjection_.UpdateMatrix();
-	}
-#endif // _DEBUG
+//#ifdef _DEBUG
+//	if (input_->TriggerKey(DIK_0)) {
+//		isDebugCameraActive_ ^= true;
+//	}
+//
+//	if (isDebugCameraActive_) {
+//		debugCamera_->Update();
+//		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+//		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+//
+//		viewProjection_.TransferMatrix();
+//	} else {
+//		viewProjection_.UpdateMatrix();
+//	}
+//#endif // _DEBUG
 
 	skydome_->Update();
 	ground_->Update();
