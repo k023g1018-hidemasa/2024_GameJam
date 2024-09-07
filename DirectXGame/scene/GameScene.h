@@ -5,6 +5,7 @@
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
 #include <vector>
+#include"Reaf.h"
 #include "WorldTransform.h"
 #include "SceneBase.h"
 
@@ -14,7 +15,6 @@ class Player;
 class Skydome;
 class Ground;
 class CameraController;
-
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -64,6 +64,10 @@ private: // メンバ変数
 	// キャラクターのテクスチャ
 	Model* modelPlayer_ = nullptr;
 	Player* player_ = nullptr;
+	//リーフのテクスチャハンドルとか
+	Model* reafModel_ = nullptr;
+	std::list<Reaf*> reafs_;
+	static inline const int32_t kReafNumber = 5;
 	//カメラコントローラ
 	CameraController* cameraController_ = nullptr;
 };

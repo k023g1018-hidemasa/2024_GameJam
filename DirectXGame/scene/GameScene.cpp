@@ -18,6 +18,10 @@ GameScene::~GameScene() {
 	delete ground_;
 	delete modelPlayer_;
 	delete player_;
+	for (auto* reafs : reafs_) { // 左が自分でなんでも決めれる名前、右が左にコピーする対象したのを変更したら右が（本体）変わる
+		delete reafs;
+	}
+	reafs_.clear();
 	delete cameraController_;
 }
 
@@ -44,7 +48,16 @@ void GameScene::Initialize() {
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
-	player_->Initialize(modelPlayer_, &viewProjection_);
+  player_->Initialize(modelPlayer_, &viewProjection_);
+  
+	reafModel_ = Model::CreateFromOBJ("AL3_Enemy", true);///////////////////////葉っぱのモデルを突っ込む
+	for (int32_t i = 0; i < kReafNumber; ++i) {
+		Reaf* newReaf = new Reaf();
+		Vector3 reafPosition = mapChipField_->GetMaoChipPositionByIndex(15 + i, 18 - i);
+		newReaf->Initialize(reafModel_, &viewProjection_, reafPosition);
+
+		reafs_.push_back(newReaf);
+	}
 	//カメラ初期化
 	cameraController_ = new CameraController();
 	cameraController_->Initialize(&viewProjection_);
@@ -73,6 +86,13 @@ void GameScene::Update() {
 	skydome_->Update();
 	ground_->Update();
 	player_->Update();
+	// 敵の更新処理
+	for (auto* reafs : reafs_) { // 左が自分でなんでも決めれる名前、右が左にコピーする対象したのを変更したら右が（本体）変わる
+		reafs->Update();
+		//ここを個別にしないと一個一個に動きを付けられない
+		//多分直結型がiを使ってこれはautoの指揮系があってそこから枝分かれ的に指示を渡してる
+		//枝分かれの制限を渡すか渡さないかを制御すればできそう
+	}
 	cameraController_->Update();
 }
 
@@ -102,11 +122,13 @@ void GameScene::Draw() {
 	skydome_->Draw();
 	ground_->Draw();
 	player_->Draw();
-
+	// 敵描画
+	for (auto* reafs : reafs_) { // 左が自分でなんでも決めれる名前、右が左にコピーする対象したのを変更したら右が（本体）変わる
+		reafs->Draw();
+	}
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
