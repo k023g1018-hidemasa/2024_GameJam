@@ -25,6 +25,14 @@ GameScene::~GameScene() {
 
 	delete model_;
 	delete player_;
+
+	for (auto* reafs : reafs_) { // 左が自分でなんでも決めれる名前、右が左にコピーする対象したのを変更したら右が（本体）変わる
+		delete reafs;
+	}
+	reafs_.clear();
+	
+
+
 }
 
 void GameScene::Initialize() {
@@ -60,6 +68,18 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	player_->Initialize(model_, &viewProjection_, playrePosition);
+
+	reafModel_ = Model::CreateFromOBJ("AL3_Enemy", true);///////////////////////葉っぱのモデルを突っ込む
+	worldTransform_.Initialize(); 
+
+	for (int32_t i = 0; i < kReafNumber; ++i) {
+		Reaf* newReaf = new Reaf();
+		Vector3 reafPosition = mapChipField_->GetMaoChipPositionByIndex(15 + i, 18 - i);
+		newReaf->Initialize(reafModel_, &viewProjection_, reafPosition);
+
+		reafs_.push_back(newReaf);
+	}
+
 }
 
 void GameScene::Update() {
@@ -97,6 +117,16 @@ void GameScene::Update() {
 
 	// 自キャラの更sin
 	player_->Update();
+
+
+	
+	// 敵の更新処理
+	for (auto* reafs : reafs_) { // 左が自分でなんでも決めれる名前、右が左にコピーする対象したのを変更したら右が（本体）変わる
+		reafs->Update();
+		//ここを個別にしないと一個一個に動きを付けられない
+		//多分直結型がiを使ってこれはautoの指揮系があってそこから枝分かれ的に指示を渡してる
+		//枝分かれの制限を渡すか渡さないかを制御すればできそう
+	}
 }
 
 void GameScene::Draw() {
@@ -135,6 +165,12 @@ void GameScene::Draw() {
 	}
 	// 自キャラの描画
 	player_->Draw();
+	// 敵描画
+	for (auto* reafs : reafs_) { // 左が自分でなんでも決めれる名前、右が左にコピーする対象したのを変更したら右が（本体）変わる
+		reafs->Draw();
+	}
+
+
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる

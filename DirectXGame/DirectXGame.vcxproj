@@ -112,8 +112,10 @@
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapchipField.cpp" />
+    <ClCompile Include="math\Vector3.cpp" />
     <ClCompile Include="MTFunction.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Reaf.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="Skydome.cpp" />
   </ItemGroup>
@@ -151,6 +153,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="Skydome.h" />
+    <ClInclude Include="Reaf.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">

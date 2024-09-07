@@ -13,6 +13,7 @@
 #include "WorldTransform.h"
 #include "player.h"
 #include <vector>
+#include"Reaf.h"
 
 /// <summary>
 /// ゲームシーン
@@ -74,4 +75,10 @@ private: // メンバ変数
 
 	Model* model_ = nullptr;
 	Player* player_ = nullptr;
+	//リーフのテクスチャハンドルとか
+	Model* reafModel_ = nullptr;
+	std::list<Reaf*> reafs_;
+	static inline const int32_t kReafNumber = 5;
+
+
 };
