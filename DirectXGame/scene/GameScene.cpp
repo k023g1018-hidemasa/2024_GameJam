@@ -48,12 +48,12 @@ void GameScene::Initialize() {
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
-  player_->Initialize(modelPlayer_, &viewProjection_);
+	player_->Initialize(modelPlayer_, &viewProjection_);
   
 	reafModel_ = Model::CreateFromOBJ("AL3_Enemy", true);///////////////////////葉っぱのモデルを突っ込む
 	for (int32_t i = 0; i < kReafNumber; ++i) {
 		Reaf* newReaf = new Reaf();
-		Vector3 reafPosition = mapChipField_->GetMaoChipPositionByIndex(15 + i, 18 - i);
+		Vector3 reafPosition = {3.0f, 10.0f, 0.0f};
 		newReaf->Initialize(reafModel_, &viewProjection_, reafPosition);
 
 		reafs_.push_back(newReaf);
@@ -64,24 +64,27 @@ void GameScene::Initialize() {
 	cameraController_->SetTarget(player_);
 	cameraController_->SetMovableArea({ -20.0f, 20.0f, 10.0f,60.0f });
 	cameraController_->Reset();
+	//音声初期化
+	BGM_ = audio_->LoadWave("relax.mp3");
+	audio_->PlayWave(BGM_);
 }
 
 void GameScene::Update() {
-//#ifdef _DEBUG
-//	if (input_->TriggerKey(DIK_0)) {
-//		isDebugCameraActive_ ^= true;
-//	}
-//
-//	if (isDebugCameraActive_) {
-//		debugCamera_->Update();
-//		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-//		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-//
-//		viewProjection_.TransferMatrix();
-//	} else {
-//		viewProjection_.UpdateMatrix();
-//	}
-//#endif // _DEBUG
+#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_0)) {
+		isDebugCameraActive_ ^= true;
+	}
+
+	if (isDebugCameraActive_) {
+		debugCamera_->Update();
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+
+		viewProjection_.TransferMatrix();
+	} else {
+		viewProjection_.UpdateMatrix();
+	}
+#endif // _DEBUG
 
 	skydome_->Update();
 	ground_->Update();

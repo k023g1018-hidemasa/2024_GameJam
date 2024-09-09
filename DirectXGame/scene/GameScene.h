@@ -70,4 +70,6 @@ private: // メンバ変数
 	static inline const int32_t kReafNumber = 5;
 	//カメラコントローラ
 	CameraController* cameraController_ = nullptr;
+	//音声用
+	uint32_t BGM_ = 0;
 };
