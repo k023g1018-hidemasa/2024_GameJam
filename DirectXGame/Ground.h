@@ -1,14 +1,17 @@
 #pragma once
-#include"Model.h"
 #include"WorldTransform.h"
-#include"ViewProjection.h"
-#include<cassert>
 
-class  Skydome {
+class Model;
+class ViewProjection;
+
+class Ground
+{
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
+	/// <param name="model"></param>
+	/// <param name="viewProjection"></param>
 	void Initialize(Model* model, ViewProjection* viewProjection);
 	/// <summary>
 	/// 更新
@@ -21,8 +24,5 @@ public:
 private:
 	WorldTransform worldTransform_;
 	ViewProjection* viewProjection_ = nullptr;
-	Model* modelPlayer_= nullptr;
-	uint32_t textureHandle_ = 0u;
+	Model* modelPlayer_ = nullptr;
 };
-
- 

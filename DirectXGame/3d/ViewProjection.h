@@ -1,7 +1,5 @@
 #pragma once
-
-#include "Matrix4x4.h"
-#include "Vector3.h"
+#include "MTFunction.h"
 #include <d3d12.h>
 #include <type_traits>
 #include <wrl.h>
@@ -37,9 +35,9 @@ public:
 #pragma endregion
 
 	// ビュー行列
-	Matrix4x4 matView;
+	Matrix4x4 matView{};
 	// 射影行列
-	Matrix4x4 matProjection;
+	Matrix4x4 matProjection{};
 
 	ViewProjection() = default;
 	~ViewProjection() = default;

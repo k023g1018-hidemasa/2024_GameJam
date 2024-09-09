@@ -1,7 +1,4 @@
 #pragma once
-
-#include "Matrix4x4.h"
-#include "Vector3.h"
 #include <d3d12.h>
 #include <type_traits>
 #include <wrl.h>
@@ -24,7 +21,7 @@ public:
 	// ローカル座標
 	Vector3 translation_ = {0, 0, 0};
 	// ローカル → ワールド変換行列
-	Matrix4x4 matWorld_;
+	Matrix4x4 matWorld_{};
 	// 親となるワールド変換へのポインタ
 	const WorldTransform* parent_ = nullptr;
 
