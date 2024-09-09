@@ -83,8 +83,8 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="math\Vector3.cpp">
-		<Filter>ソース ファイル</Filter>
-	</ClCompile>
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="Ground.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -194,8 +194,8 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Reaf.h">
-		<Filter>ヘッダー ファイル</Filter>
-	</ClInclude>
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="Ground.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -208,9 +208,6 @@
     <ClInclude Include="SceneManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="SceneBase.h">
-      <Filter>ヘッダー ファイル</Filter>
-	</ClInclude>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
       <Filter>シェーダー ファイル</Filter>
     </FxCompile>
@@ -256,5 +253,15 @@
     <None Include="Resources\shaders\Terrain.hlsli">
       <Filter>シェーダー ファイル</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TitleScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

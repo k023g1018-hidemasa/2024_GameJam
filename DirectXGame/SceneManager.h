@@ -1,6 +1,13 @@
 #pragma once
-#include <memory>
-#include"SceneBase.h"
+#include "Audio.h"
+#include "AxisIndicator.h"
+#include "DirectXCommon.h"
+#include "ImGuiManager.h"
+#include "PrimitiveDrawer.h"
+#include "TextureManager.h"
+#include "WinApp.h"
+#include "GameScene.h"
+#include "TitleScene.h"
 
 enum class Scene {
 	titleScene,
@@ -10,18 +17,31 @@ enum class Scene {
 	numOfScenes
 };
 
-//SceneManagerがSceneBaseを管理できる
 class SceneManager
 {
 public:
 	SceneManager(){}
-	~SceneManager(){}
+	~SceneManager();
 	void Initialize();
-	void Update();
-	void Draw();
+	void Run();
+	void ChangeScene();
+	void UpdateScene();
+	void DrawScene();
 private:
-	std::unique_ptr<SceneBase> sceneArr_[4];
+	Scene scene = Scene::titleScene;
+	//蒲田エンジン
+	WinApp* win = nullptr;
+	DirectXCommon* dxCommon = nullptr;
+	// 汎用機能
+	Input* input = nullptr;
+	Audio* audio = nullptr;
+	AxisIndicator* axisIndicator = nullptr;
+	PrimitiveDrawer* primitiveDrawer = nullptr;
+	// ImGuiの初期化
+	ImGuiManager* imguiManager = ImGuiManager::GetInstance();
 
-	Scene scene = Scene::gameScene;
+	//シーン
+	GameScene* gameScene = nullptr;
+	TitleScene* titleScene = nullptr;
 };
 

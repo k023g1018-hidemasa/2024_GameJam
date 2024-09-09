@@ -1,5 +1,4 @@
 #pragma once
-#include "Vector3.h"
 #include <d3d12.h>
 #include <type_traits>
 #include <wrl.h>

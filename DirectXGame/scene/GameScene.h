@@ -7,7 +7,6 @@
 #include <vector>
 #include"Reaf.h"
 #include "WorldTransform.h"
-#include "SceneBase.h"
 
 class Model;
 class ViewProjection;
@@ -18,7 +17,7 @@ class CameraController;
 /// <summary>
 /// ゲームシーン
 /// </summary>
-class GameScene : public SceneBase{
+class GameScene {
 
 public: // メンバ関数
 	/// <summary>
@@ -29,22 +28,22 @@ public: // メンバ関数
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~GameScene() override;
+	~GameScene();
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize() override;
+	void Initialize();
 
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update() override;
+	void Update();
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw() override;
+	void Draw();
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
