@@ -8,10 +8,23 @@
 #include <imgui.h>
 #include <numbers>
 
+class Reaf;
+
+
 enum class LRDirection {
 	kRight,
 	kLeft,
 };
+// 角
+enum Corner {
+	kRightBottom, // 右下
+	kLeftBottom,  // 左下
+	kRightTop,    // 右上
+	kLeftTop,     // 左上
+
+	kNumCorner // enumの要素数ここを見ると何個あるかわかる
+};
+
 
 class Player {
 public:
@@ -42,6 +55,12 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
+
+	Vector3 GetWorldPosition();
+	AABB GetAABB();
+	void OnCollision(const Reaf* reaf);
+
+
 private:
 	WorldTransform worldTransform_;
 	/// <summary>
@@ -53,6 +72,8 @@ private:
 	/// テクスチャハンドル
 	/// </summary>
 	uint32_t textureHandle_ = 0u;
+
+	
 
 	static inline const float kAcceleration = 0.2f;
 	static inline const float kAttenuation = 0.5f;
@@ -74,4 +95,11 @@ private:
 	static inline const float kTimeTurn = 0.3f;
 	// 接地状態フラグ
 	bool onGround_ = true;
+
+	static inline const float kWidth = 1.8f;
+	static inline const float kHeight = 1.8f;
+
+	Vector3 CornerPostion(const Vector3& center, Corner corner);
+	static inline const float kBlank = 0.2f; // めり込まない数値？
+
 };

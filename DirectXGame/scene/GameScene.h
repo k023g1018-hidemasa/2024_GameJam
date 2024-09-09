@@ -43,6 +43,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画
 	/// </summary>
+	void CheckAllCollision();
 	void Draw();
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -66,7 +67,7 @@ private: // メンバ変数
 	//リーフのテクスチャハンドルとか
 	Model* reafModel_ = nullptr;
 	std::list<Reaf*> reafs_;
-	static inline const int32_t kReafNumber = 5;
+	static inline const int32_t kReafNumber = 1;
 	//カメラコントローラ
 	CameraController* cameraController_ = nullptr;
 	//音声用
