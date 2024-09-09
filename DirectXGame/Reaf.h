@@ -23,7 +23,8 @@ public:
 
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; };
 	Vector3 GetWorldPosition();
-	//AABB GetAABB();
+	AABB GetAABB();
+	void OnCollision(const Player* player);
 
 	//void OnCollision(const Player* player);
 	//葉っぱの疑似振り子
@@ -41,7 +42,7 @@ private:
 	uint32_t textureHandle_ = 0u;
 	// マップチップでフィールドを作った
 	MapChipField* mapChipField_ = nullptr;
-	static inline const float kWalkSpeed = 0.1f;
+	static inline const float kWalkSpeed = 0.01f;
 	Vector3 verocity_ = {};
 	// 最初の角度（上向き）
 	static inline const float kWalkMotionAngleStart = 30;

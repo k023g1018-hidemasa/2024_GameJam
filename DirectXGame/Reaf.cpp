@@ -81,7 +81,8 @@ void Reaf::Update() {
 	}
 	//otiru
 	worldTransform_.translation_.y += verocity_.y;
-
+	//スポーンポイントを下げる
+	spawnPoint.y += verocity_.y;
 
 
 	// 多分アップデートマトリクスがワールド行列の更新？
@@ -100,17 +101,17 @@ Vector3 Reaf::GetWorldPosition() {
 	return worldPos;
 }
 
-//AABB Reaf::GetAABB() {
-//
-//	Vector3 worldPos = GetWorldPosition();
-//
-//	AABB aabb;
-//
-//	aabb.min = {worldPos.x - kWidth / 2.0f, worldPos.y - kHeight / 2.0f, worldPos.z - kWidth / 2.0f};
-//	aabb.max = {worldPos.x + kWidth / 2.0f, worldPos.y + kHeight / 2.0f, worldPos.z + kWidth / 2.0f};
-//
-//	return aabb;
-//}
-//
-//void Reaf::OnCollision(const Player* player) { (void)player; }
+AABB Reaf::GetAABB() {
+
+	Vector3 worldPos = GetWorldPosition();
+
+	AABB aabb;
+
+	aabb.min = {worldPos.x - kWidth / 2.0f, worldPos.y - kHeight / 2.0f, worldPos.z - kWidth / 2.0f};
+	aabb.max = {worldPos.x + kWidth / 2.0f, worldPos.y + kHeight / 2.0f, worldPos.z + kWidth / 2.0f};
+
+	return aabb;
+}
+
+void Reaf::OnCollision(const Player* player) { (void)player; }
 

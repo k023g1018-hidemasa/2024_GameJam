@@ -97,6 +97,7 @@ void GameScene::Update() {
 		//枝分かれの制限を渡すか渡さないかを制御すればできそう
 	}
 	cameraController_->Update();
+	CheckAllCollision();
 }
 
 void GameScene::Draw() {
@@ -149,3 +150,29 @@ void GameScene::Draw() {
 
 #pragma endregion
 }
+void GameScene::CheckAllCollision() {
+
+	// 判定対象1、2の座標
+	AABB aabb1, aabb2;
+	// 自キャラの座標
+	aabb1 = player_->GetAABB(); // ゲットはちゃんと取得してくれてるけどaabb1,2にわたってないっぽい？
+	// 自キャラと敵弾すべての当たり判定
+	for (Reaf* reafs : reafs_) {
+		// 敵弾の座標
+		aabb2 = reafs->GetAABB();
+
+		// AABB同士の考査判定
+		if (IsCollision(aabb1, aabb2)) {
+			// ぶつかった時どうするか
+			// 自キャラの衝突時コールバックを呼び出す
+			player_->OnCollision(reafs);
+		//	player_->IsDead();
+			// 敵との衝突時コールバック呼び出し
+			reafs->OnCollision(player_);
+
+		
+		}
+	}
+}
+
+
