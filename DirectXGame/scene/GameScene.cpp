@@ -53,7 +53,7 @@ void GameScene::Initialize() {
 	reafModel_ = Model::CreateFromOBJ("AL3_Enemy", true);///////////////////////葉っぱのモデルを突っ込む
 	for (int32_t i = 0; i < kReafNumber; ++i) {
 		Reaf* newReaf = new Reaf();
-		Vector3 reafPosition = {3.0f, 10.0f, 0.0f};
+		Vector3 reafPosition = {3.0f, 10.0f + (i * 2.0f), 0.0f};
 		newReaf->Initialize(reafModel_, &viewProjection_, reafPosition);
 
 		reafs_.push_back(newReaf);
@@ -72,7 +72,7 @@ void GameScene::Initialize() {
 void GameScene::Update() {
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_0)) {
-		isDebugCameraActive_ ^= true;
+		isDebugCameraActive_ = true;
 	}
 
 	if (isDebugCameraActive_) {
