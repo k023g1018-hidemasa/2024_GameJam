@@ -44,7 +44,7 @@ void GameScene::Initialize() {
 	modelGround_ = Model::CreateFromOBJ("Ground", true);
 	ground_->Initialize(modelGround_, &viewProjection_);
 	//プレイヤー
-	modelPlayer_ = Model::Create();
+	modelPlayer_ = Model::CreateFromOBJ("Player", true);
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化

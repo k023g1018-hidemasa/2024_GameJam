@@ -9,13 +9,13 @@ Player::~Player() {} // 未定義、参照されてないは関数の作り忘�
 void Player::Initialize(Model* model, ViewProjection* viewProjection) {
 	assert(model);
 	modelPlayer_ = model;
-	//	textureHandle_ = textureHandle;
 	worldTransform_.Initialize();
 	// 行列を定数バッファに転送//定数バッファ＝グラボ
 	viewProjection_ = viewProjection;
-	worldTransform_.translation_ = { 2.0f,2.0f,0.0f }; //modelのサイズは2.0f x 2.0fので
+	worldTransform_.translation_ = { 0.0f,3.0f,0.0f }; //modelのサイズは2.0f x 2.0fので
 	// 初期回転角の指定//Y軸を90度右に回転、2π
-	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
+	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
+	worldTransform_.scale_ = {2.0f, 2.0f, 2.0f};
 }
 void Player::Update() {
 	// 接地フラグ
@@ -67,12 +67,8 @@ void Player::Update() {
 				velocity_.x = 0;
 			}
 		}
-		if (Input::GetInstance()->PushKey(DIK_UP)) {
-			// ジャンプ初速
-			velocity_.y	+= kJumpAccleration;
-		}
 		// ジャンプ開始
-		if (velocity_.y > 0.0f) {
+		if (worldTransform_.translation_.y > 3.0f) {
 			// 空ちゅう状態に移行
 			onGround_ = false;
 		}
@@ -95,13 +91,13 @@ void Player::Update() {
 		//  加工中？
 		if (velocity_.y < 0) {
 			// ｙ座標が地面いかになったら着地
-			if (worldTransform_.translation_.y <= 2.0f) {
+			if (worldTransform_.translation_.y <= 0.0f) {
 				landing = true;
 			}
 		}
 		if (landing) {
 			// めり込み排斥
-			worldTransform_.translation_.y = 2.0f;
+			worldTransform_.translation_.y = 3.0f;
 			// 摩擦で横方向速度が減衰知る
 			velocity_.x *= (1.0f - kAttenuation); // お前誰やねん
 			// 下方向速度をリセット
@@ -129,22 +125,12 @@ void Player::Update() {
 }
 
 void Player::Draw() {
-	modelPlayer_->Draw(worldTransform_, *viewProjection_, textureHandle_);
+	modelPlayer_->Draw(worldTransform_, *viewProjection_);
 	/*ImGui::Begin("window");
 	ImGui::InputFloat3("Velocity", &velocity_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
 	ImGui::End();*/
 }
-Vector3 Player::CornerPostion(const Vector3& center, Corner corner) {
 
-	Vector3 offsetTable[kNumCorner] = {
-	    {+kWidth / 2.0f, -kHeight / 2.0f, 0}, //  rightBottom
-	    {-kWidth / 2.0f, -kHeight / 2.0f, 0}, //  LeftBottom
-	    {+kWidth / 2.0f, +kHeight / 2.0f, 0}, //  RightTop
-	    {-kWidth / 2.0f, +kHeight / 2.0f, 0}, //  LeftTop
-	};
-
-	return center + offsetTable[static_cast<uint32_t>(corner)];
-}
 Vector3 Player::GetWorldPosition() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos{};
