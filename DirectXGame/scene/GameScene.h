@@ -14,6 +14,8 @@ class Player;
 class Skydome;
 class Ground;
 class CameraController;
+class ItemManager;
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -64,10 +66,7 @@ private: // メンバ変数
 	// キャラクターのテクスチャ
 	Model* modelPlayer_ = nullptr;
 	Player* player_ = nullptr;
-	//リーフのテクスチャハンドルとか
-	Model* reafModel_ = nullptr;
-	std::list<Reaf*> reafs_;
-	static inline const int32_t kReafNumber = 1;
+	ItemManager* itemManager_ = nullptr;
 	//カメラコントローラ
 	CameraController* cameraController_ = nullptr;
 	//音声用

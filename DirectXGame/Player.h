@@ -10,7 +10,6 @@
 
 class Reaf;
 
-
 enum class LRDirection {
 	kRight,
 	kLeft,
@@ -24,7 +23,6 @@ enum Corner {
 
 	kNumCorner // enumの要素数ここを見ると何個あるかわかる
 };
-
 
 class Player {
 public:
@@ -71,9 +69,6 @@ private:
 	/// <summary>
 	/// テクスチャハンドル
 	/// </summary>
-	uint32_t textureHandle_ = 0u;
-
-	
 
 	static inline const float kAcceleration = 0.2f;
 	static inline const float kAttenuation = 0.5f;
@@ -96,10 +91,8 @@ private:
 	// 接地状態フラグ
 	bool onGround_ = true;
 
-	static inline const float kWidth = 1.8f;
-	static inline const float kHeight = 1.8f;
-
-	Vector3 CornerPostion(const Vector3& center, Corner corner);
+	static inline const float kWidth = 2.0f;
+	static inline const float kHeight = 4.0f;
 	static inline const float kBlank = 0.2f; // めり込まない数値？
 
 };

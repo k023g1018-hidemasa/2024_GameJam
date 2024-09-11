@@ -101,6 +101,14 @@ Vector3 Reaf::GetWorldPosition() {
 	return worldPos;
 }
 
+void Reaf::SetPositionOutOfBounds() { 
+	/*worldTransform_.matWorld_.m[3][0] = 0.0f;
+	worldTransform_.matWorld_.m[3][1] = 1000.0f;
+	worldTransform_.matWorld_.m[3][2] = 0.0f;*/
+	spawnPoint = {0.0f, -100.0f, 0.0f};
+	worldTransform_.translation_ = {0.0f, -100.0f, 0.0f};
+}
+
 AABB Reaf::GetAABB() {
 
 	Vector3 worldPos = GetWorldPosition();
@@ -113,5 +121,8 @@ AABB Reaf::GetAABB() {
 	return aabb;
 }
 
-void Reaf::OnCollision(const Player* player) { (void)player; }
-
+void Reaf::OnCollision(const Player* player) {
+	(void)player;
+	isAlive_ = false;
+	SetPositionOutOfBounds();
+}

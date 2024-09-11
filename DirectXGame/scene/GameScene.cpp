@@ -7,6 +7,7 @@
 #include "Skydome.h"
 #include "Ground.h"
 #include "CameraController.h"
+#include "ItemManager.h"
 
 GameScene::GameScene() {}
 
@@ -18,11 +19,8 @@ GameScene::~GameScene() {
 	delete ground_;
 	delete modelPlayer_;
 	delete player_;
-	for (auto* reafs : reafs_) { // 左が自分でなんでも決めれる名前、右が左にコピーする対象したのを変更したら右が（本体）変わる
-		delete reafs;
-	}
-	reafs_.clear();
 	delete cameraController_;
+	delete itemManager_;
 }
 
 void GameScene::Initialize() {
@@ -44,20 +42,14 @@ void GameScene::Initialize() {
 	modelGround_ = Model::CreateFromOBJ("Ground", true);
 	ground_->Initialize(modelGround_, &viewProjection_);
 	//プレイヤー
-	modelPlayer_ = Model::Create();
+	modelPlayer_ = Model::CreateFromOBJ("Player", true);
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
 	player_->Initialize(modelPlayer_, &viewProjection_);
-  
-	reafModel_ = Model::CreateFromOBJ("AL3_Enemy", true);///////////////////////葉っぱのモデルを突っ込む
-	for (int32_t i = 0; i < kReafNumber; ++i) {
-		Reaf* newReaf = new Reaf();
-		Vector3 reafPosition = {3.0f, 10.0f + (i * 2.0f), 0.0f};
-		newReaf->Initialize(reafModel_, &viewProjection_, reafPosition);
-
-		reafs_.push_back(newReaf);
-	}
+	//アイテム初期化
+	itemManager_ = new ItemManager(&viewProjection_);
+	itemManager_->Initialize();
 	//カメラ初期化
 	cameraController_ = new CameraController();
 	cameraController_->Initialize(&viewProjection_);
@@ -89,13 +81,7 @@ void GameScene::Update() {
 	skydome_->Update();
 	ground_->Update();
 	player_->Update();
-	// 敵の更新処理
-	for (auto* reafs : reafs_) { // 左が自分でなんでも決めれる名前、右が左にコピーする対象したのを変更したら右が（本体）変わる
-		reafs->Update();
-		//ここを個別にしないと一個一個に動きを付けられない
-		//多分直結型がiを使ってこれはautoの指揮系があってそこから枝分かれ的に指示を渡してる
-		//枝分かれの制限を渡すか渡さないかを制御すればできそう
-	}
+	itemManager_->Update();
 	cameraController_->Update();
 	CheckAllCollision();
 }
@@ -126,10 +112,8 @@ void GameScene::Draw() {
 	skydome_->Draw();
 	ground_->Draw();
 	player_->Draw();
-	// 敵描画
-	for (auto* reafs : reafs_) { // 左が自分でなんでも決めれる名前、右が左にコピーする対象したのを変更したら右が（本体）変わる
-		reafs->Draw();
-	}
+	itemManager_->Draw();
+
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
@@ -157,7 +141,7 @@ void GameScene::CheckAllCollision() {
 	// 自キャラの座標
 	aabb1 = player_->GetAABB(); // ゲットはちゃんと取得してくれてるけどaabb1,2にわたってないっぽい？
 	// 自キャラと敵弾すべての当たり判定
-	for (Reaf* reafs : reafs_) {
+	for (Reaf* reafs : itemManager_->GetReafs()) {
 		// 敵弾の座標
 		aabb2 = reafs->GetAABB();
 
