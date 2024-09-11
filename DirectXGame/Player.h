@@ -10,7 +10,6 @@
 
 class Reaf;
 
-
 enum class LRDirection {
 	kRight,
 	kLeft,
@@ -24,7 +23,6 @@ enum Corner {
 
 	kNumCorner // enumの要素数ここを見ると何個あるかわかる
 };
-
 
 class Player {
 public:

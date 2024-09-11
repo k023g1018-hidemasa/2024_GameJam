@@ -112,6 +112,7 @@
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math\Vector3.cpp" />
     <ClCompile Include="MTFunction.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="input\Input.h" />
+    <ClInclude Include="ItemManager.h" />
     <ClInclude Include="math\Matrix4x4.h" />
     <ClInclude Include="math\Vector2.h" />
     <ClInclude Include="math\Vector3.h" />
