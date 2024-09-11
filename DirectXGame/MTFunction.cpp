@@ -57,6 +57,7 @@ Matrix4x4 Multiply(Matrix4x4 a, Matrix4x4 b) {
 	result.m[3][3] = a.m[3][0] * b.m[0][3] + a.m[3][1] * b.m[1][3] + a.m[3][2] * b.m[2][3] + a.m[3][3] * b.m[3][3]; // 4列
 	return result;
 }
+
 Matrix4x4 MakeScaleMatrix(const Vector3& a) {
 	Matrix4x4 result{};
 	result.m[0][0] = a.x;
@@ -65,6 +66,7 @@ Matrix4x4 MakeScaleMatrix(const Vector3& a) {
 	result.m[3][3] = 1;
 	return result;
 };
+
 Matrix4x4 MakeTranslateMatrix(const Vector3& translate) {
 	Matrix4x4 result{};
 	result.m[0][0] = 1;
@@ -77,6 +79,7 @@ Matrix4x4 MakeTranslateMatrix(const Vector3& translate) {
 	result.m[3][2] = translate.z;
 	return result;
 };
+
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
 
 	Matrix4x4 rotateXMatrix = MakeRotateXMatrix(rotate.x);
@@ -85,17 +88,6 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Ve
 	Matrix4x4 rotateXYZMatrix = Multiply(Multiply(rotateXMatrix, rotateYMatrix), rotateZMatrix);
 
 	return Multiply(Multiply(MakeScaleMatrix(scale), rotateXYZMatrix), MakeTranslateMatrix(translate));
-<<<<<<< Updated upstream
-};
-//void MatrixScreenPrintf(int x, int y, const Matrix4x4& matrix, const char* label) {
-//	Novice::ScreenPrintf(x, y - 20, "%s", label);
-//	for (int row = 0; row < 4; ++row) {
-//		for (int column = 0; column < 4; ++column) {
-//			Novice::ScreenPrintf(x + column * kColumnWidth, y + row * kRowHeight, "%6.02f", matrix.m[row][column]);
-//		}
-//	}
-//}
-=======
 }
 
 Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, float minDepth, float maxDepth){
@@ -303,4 +295,3 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& mattrix) {
 	result.z /= w;
 	return result;
 }
->>>>>>> Stashed changes

@@ -1,23 +1,20 @@
 #pragma once
-
+#include "Input.h"
+#include "Sprite.h"
 #include "Audio.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
-#include "Input.h"
-#include "MTFunction.h"
-#include "MapchipField.h"
-#include "Model.h"
-#include "Skydome.h"
-#include "Sprite.h"
-#include "ViewProjection.h"
-#include "WorldTransform.h"
-<<<<<<< Updated upstream
-#include "player.h"
 #include <vector>
-=======
+#include"Reaf.h"
+#include "WorldTransform.h"
 #include"score.h"
->>>>>>> Stashed changes
 
+class Model;
+class ViewProjection;
+class Player;
+class Skydome;
+class Ground;
+class CameraController;
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -47,39 +44,27 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画
 	/// </summary>
+	void CheckAllCollision();
 	void Draw();
-
-	void GenerateBlocks();
-
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
-
-	Model* blockModel_ = nullptr;
-	uint32_t blockTextureHandle_ = 0u;
-	// 要素数が分からないから(可変できる配列)、多分ふぉｒで回してブロックの数文っていうやり方？
-	// ：の後ろを参照して消す：の前が一個ずつずらしてくれる、とりあえず全部に命令できる
-	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
-
+	//ゲームシーン
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
 
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
-
 	// これの名前で呼び出せばｈにあるやつは使えるからわかりやすく？
-	Skydome* skydome_ = nullptr;
 	Model* modelSkydome_ = nullptr;
-
-	MapChipField* mapChipField_;
+	Skydome* skydome_ = nullptr;
+	//地面用
+	Model* modelGround_ = nullptr;
+	Ground* ground_ = nullptr;
 	// キャラクターのテクスチャ
-	uint32_t texturHandle_ = 0;
-
-	Model* model_ = nullptr;
+	Model* modelPlayer_ = nullptr;
 	Player* player_ = nullptr;
-<<<<<<< Updated upstream
-=======
 	//リーフのテクスチャハンドルとか
 	Model* reafModel_ = nullptr;
 	std::list<Reaf*> reafs_;
@@ -93,5 +78,4 @@ private: // メンバ変数
 	Score* scoreParticles_ = nullptr;
 	Model* scoreParticlesModel_ = nullptr;
 
->>>>>>> Stashed changes
 };

@@ -8,10 +8,23 @@
 #include <imgui.h>
 #include <numbers>
 
+class Reaf;
+
+
 enum class LRDirection {
 	kRight,
 	kLeft,
 };
+// 角
+enum Corner {
+	kRightBottom, // 右下
+	kLeftBottom,  // 左下
+	kRightTop,    // 右上
+	kLeftTop,     // 左上
+
+	kNumCorner // enumの要素数ここを見ると何個あるかわかる
+};
+
 
 class Player {
 public:
@@ -23,7 +36,7 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~Player();
-	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
+	void Initialize(Model* model, ViewProjection* viewProjection);
 	/// <summary>
 	/// 更新処理
 	/// </summary>
@@ -32,8 +45,6 @@ public:
 	/// 描画処理
 	/// </summary>
 	void Draw();
-<<<<<<< Updated upstream
-=======
 	/// <summary>
 	/// velocityを取得
 	/// </summary>
@@ -50,19 +61,20 @@ public:
 	void OnCollision(const Reaf* reaf);
 	bool IsGeated() const { return isGeat_; }
 	bool oneRoop_ = false;//一回だけ当たり判定を通ったら通過できるように
->>>>>>> Stashed changes
 
 private:
 	WorldTransform worldTransform_;
 	/// <summary>
 	/// モデル//一旦預かるだけ
 	/// </summary>
-	Model* model_ = nullptr;
+	Model* modelPlayer_ = nullptr;
 	ViewProjection* viewProjection_ = nullptr;
 	/// <summary>
 	/// テクスチャハンドル
 	/// </summary>
 	uint32_t textureHandle_ = 0u;
+
+	
 
 	static inline const float kAcceleration = 0.2f;
 	static inline const float kAttenuation = 0.5f;
@@ -84,8 +96,6 @@ private:
 	static inline const float kTimeTurn = 0.3f;
 	// 接地状態フラグ
 	bool onGround_ = true;
-<<<<<<< Updated upstream
-=======
 
 	static inline const float kWidth = 1.8f;
 	static inline const float kHeight = 1.8f;
@@ -98,5 +108,4 @@ private:
 
 
 
->>>>>>> Stashed changes
 };
