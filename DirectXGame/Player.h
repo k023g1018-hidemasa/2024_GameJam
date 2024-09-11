@@ -32,6 +32,25 @@ public:
 	/// 描画処理
 	/// </summary>
 	void Draw();
+<<<<<<< Updated upstream
+=======
+	/// <summary>
+	/// velocityを取得
+	/// </summary>
+	/// <returns></returns>
+	Vector3 GetVelocity() { return velocity_; }
+	/// <summary>
+	/// worldTransformを取得
+	/// </summary>
+	/// <returns></returns>
+	const WorldTransform& GetWorldTransform() { return worldTransform_; }
+
+	Vector3 GetWorldPosition();
+	AABB GetAABB();
+	void OnCollision(const Reaf* reaf);
+	bool IsGeated() const { return isGeat_; }
+	bool oneRoop_ = false;//一回だけ当たり判定を通ったら通過できるように
+>>>>>>> Stashed changes
 
 private:
 	WorldTransform worldTransform_;
@@ -65,4 +84,19 @@ private:
 	static inline const float kTimeTurn = 0.3f;
 	// 接地状態フラグ
 	bool onGround_ = true;
+<<<<<<< Updated upstream
+=======
+
+	static inline const float kWidth = 1.8f;
+	static inline const float kHeight = 1.8f;
+
+	Vector3 CornerPostion(const Vector3& center, Corner corner);
+	static inline const float kBlank = 0.2f; // めり込まない数値？
+	//スコアの更新、エフェクトの発生
+	bool isGeat_ = false;
+
+
+
+
+>>>>>>> Stashed changes
 };

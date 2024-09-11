@@ -11,8 +11,12 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+<<<<<<< Updated upstream
 #include "player.h"
 #include <vector>
+=======
+#include"score.h"
+>>>>>>> Stashed changes
 
 /// <summary>
 /// ゲームシーン
@@ -74,4 +78,20 @@ private: // メンバ変数
 
 	Model* model_ = nullptr;
 	Player* player_ = nullptr;
+<<<<<<< Updated upstream
+=======
+	//リーフのテクスチャハンドルとか
+	Model* reafModel_ = nullptr;
+	std::list<Reaf*> reafs_;
+	static inline const int32_t kReafNumber = 1;
+	//カメラコントローラ
+	CameraController* cameraController_ = nullptr;
+	//音声用
+	uint32_t BGM_ = 0;
+
+	//ゲットの判定
+	Score* scoreParticles_ = nullptr;
+	Model* scoreParticlesModel_ = nullptr;
+
+>>>>>>> Stashed changes
 };

@@ -115,6 +115,7 @@
     <ClCompile Include="MTFunction.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
+    <ClCompile Include="score.cpp" />
     <ClCompile Include="Skydome.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +151,7 @@
     <ClInclude Include="MTFunction.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="scene\GameScene.h" />
+    <ClInclude Include="score.h" />
     <ClInclude Include="Skydome.h" />
   </ItemGroup>
   <ItemGroup>

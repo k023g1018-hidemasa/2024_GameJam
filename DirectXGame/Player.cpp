@@ -135,3 +135,48 @@ void Player::Draw() {
 	ImGui::InputFloat3("Velocity", &velocity_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
 	ImGui::End();*/
 }
+<<<<<<< Updated upstream
+=======
+Vector3 Player::CornerPostion(const Vector3& center, Corner corner) {
+
+	Vector3 offsetTable[kNumCorner] = {
+	    {+kWidth / 2.0f, -kHeight / 2.0f, 0}, //  rightBottom
+	    {-kWidth / 2.0f, -kHeight / 2.0f, 0}, //  LeftBottom
+	    {+kWidth / 2.0f, +kHeight / 2.0f, 0}, //  RightTop
+	    {-kWidth / 2.0f, +kHeight / 2.0f, 0}, //  LeftTop
+	};
+
+	return center + offsetTable[static_cast<uint32_t>(corner)];
+}
+Vector3 Player::GetWorldPosition() {
+	// ワールド座標を入れる変数
+	Vector3 worldPos{};
+	// ワールド行列の平行移動成分を取得（ワールド座標）
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPos;
+}
+AABB Player::GetAABB() {
+
+	Vector3 worldPos = GetWorldPosition();
+
+	AABB aabb{};
+
+	aabb.min = {worldPos.x - kWidth / 2.0f, worldPos.y - kHeight / 2.0f, worldPos.z - kWidth / 2.0f};
+	aabb.max = {worldPos.x + kWidth / 2.0f, worldPos.y + kHeight / 2.0f, worldPos.z + kWidth / 2.0f};
+
+	return aabb;
+}
+void Player::OnCollision(const Reaf* reaf) {
+	(void)reaf;
+	// ジャンプ開始（仮処理）
+	//isDead_ = true; //	ここで変更
+	worldTransform_.translation_.y += 5;
+	isGeat_ = true; //	ここで変更
+	oneRoop_ = true;
+}
+
+
+>>>>>>> Stashed changes
