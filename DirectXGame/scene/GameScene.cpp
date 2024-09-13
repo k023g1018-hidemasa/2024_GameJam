@@ -68,12 +68,7 @@ void GameScene::Initialize() {
 	cameraController_->SetTarget(player_);
 	cameraController_->SetMovableArea({ -10.0f, 10.0f, 10.0f,60.0f });
 	cameraController_->Reset();
-	//音声初期化
-	BGM_ = audio_->LoadWave("relax.mp3");
-	if (audio_->IsPlaying(BGM_) == true) {
-		audio_->StopWave(BGM_);
-	}
-	audio_->PlayWave(BGM_);
+
 	//zeroModel_ = Model::CreateFromOBJ("0", true);
 	//Vector3 scorePosition = {-40.0f, 20.0f, 0.0f};
 	//pointZero_ = new ScorePoint();

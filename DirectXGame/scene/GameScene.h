@@ -76,8 +76,6 @@ private: // メンバ変数
 	ItemManager* itemManager_ = nullptr;
 	//カメラコントローラ
 	CameraController* cameraController_ = nullptr;
-	//音声用
-	uint32_t BGM_ = 0;
   
 	//ゲットの判定
 	Score* scoreParticles_ = nullptr;

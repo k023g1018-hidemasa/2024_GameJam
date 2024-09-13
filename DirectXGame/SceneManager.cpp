@@ -48,6 +48,8 @@ void SceneManager::Initialize() {
 	//シーンの初期化
 	titleScene = new TitleScene();
 	titleScene->Initialize();
+
+	BGM_ = audio->LoadWave("relax.mp3");
 }
 
 void SceneManager::Run() {
@@ -98,6 +100,9 @@ void SceneManager::ChangeScene() {
 			delete titleScene;
 			titleScene = nullptr;
 			gameScene = new GameScene();
+			if (!audio->IsPlaying(BGM_)) {
+				audio->PlayWave(BGM_, true, 0.5f);
+			}
 			gameScene->Initialize();
 		}
 	break;
@@ -128,6 +133,7 @@ void SceneManager::UpdateScene() {
 	titleScene->Update();
 	break;
 	case Scene::gameScene:
+	
 	gameScene->Update();
 	break;
 	case Scene::gameOverScene:

@@ -40,6 +40,9 @@ private:
 	// ImGuiの初期化
 	ImGuiManager* imguiManager = ImGuiManager::GetInstance();
 
+	//音声用
+	uint32_t BGM_ = 0u;
+
 	//シーン
 	GameScene* gameScene = nullptr;
 	TitleScene* titleScene = nullptr;
