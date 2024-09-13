@@ -130,7 +130,6 @@ void Player::Draw() {
 	ImGui::InputFloat3("Velocity", &velocity_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
 	ImGui::End();*/
 }
-
 Vector3 Player::GetWorldPosition() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos{};
@@ -141,7 +140,6 @@ Vector3 Player::GetWorldPosition() {
 
 	return worldPos;
 }
-
 void Player::Rotation() {
 	if (turnTimer_ > 0.0f) {
 		turnTimer_ -= 1.0f / 60.0f;
@@ -168,13 +166,11 @@ void Player::OnCollision(Reaf* reaf) {
 	// ジャンプ開始（仮処理）
 	//isDead_ = true; //	ここで変更
 	worldTransform_.translation_.y += 5.0f;
+  isGeat_ = true; //	ここで変更
+	oneRoop_ = true;
 }
 
 void Player::OnCollision(Ringo* ringo) {
-
 	(void)ringo;
 	worldTransform_.translation_.y += 5.0f;
-
 }
-
-

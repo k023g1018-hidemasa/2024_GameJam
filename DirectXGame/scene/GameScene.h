@@ -7,6 +7,8 @@
 #include <vector>
 #include"Reaf.h"
 #include "WorldTransform.h"
+#include"score.h"
+#include"ScorePoint.h"
 
 class Model;
 class ViewProjection;
@@ -52,7 +54,6 @@ public: // メンバ関数
 	void Draw();
 
 	bool IsFinished() { return finished_; }
-
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -77,6 +78,16 @@ private: // メンバ変数
 	CameraController* cameraController_ = nullptr;
 	//音声用
 	uint32_t BGM_ = 0;
+  
+	//ゲットの判定
+	Score* scoreParticles_ = nullptr;
+	Model* scoreParticlesModel_ = nullptr;
+	//int scorePoint_ = 0;
+
+	Model* zeroModel_ = nullptr;
+	ScorePoint* pointZero_ = nullptr;
+  
 	//シーン切り替え用
 	bool finished_ = false;
+
 };

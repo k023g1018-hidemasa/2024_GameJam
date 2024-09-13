@@ -28,6 +28,7 @@ public:
 	/// </summary>
 	void Rotate();
 	// デスフラグのgetter
+	bool IsGeated() const { return finished_; }
 	bool IsFinished() const { return finished_; }
 
 private:

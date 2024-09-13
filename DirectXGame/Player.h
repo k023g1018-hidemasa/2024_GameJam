@@ -54,14 +54,15 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
-
 	void Rotation();
 
 	Vector3 GetWorldPosition();
 	AABB GetAABB();
 	void OnCollision(Reaf* reaf);
 	void OnCollision(Ringo* ringo);
-
+  
+  bool IsGeated() const { return isGeat_; }
+	bool oneRoop_ = false;//一回だけ当たり判定を通ったら通過できるように
 private:
 	WorldTransform worldTransform_;
 	/// <summary>
@@ -72,7 +73,6 @@ private:
 	/// <summary>
 	/// テクスチャハンドル
 	/// </summary>
-
 	static inline const float kAcceleration = 0.01f;
 	static inline const float kAttenuation = 0.03f;
 	static inline const float kLimitRunSpeed = 0.4f;
@@ -93,9 +93,9 @@ private:
 	static inline const float kTimeTurn = 0.3f;
 	// 接地状態フラグ
 	bool onGround_ = true;
-
 	static inline const float kWidth = 2.0f;
 	static inline const float kHeight = 4.0f;
 	static inline const float kBlank = 0.2f; // めり込まない数値？
-
+  //スコアの更新、エフェクトの発生
+  bool isGeat_ = false;
 };

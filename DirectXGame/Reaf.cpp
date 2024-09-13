@@ -19,7 +19,6 @@ Vector3 Lerp(const Vector3& a, const Vector3& b, float t) { // イージング�
 	resurt.z = t * b.z + (1.0f - t) * a.z; 
 	return resurt;
 }
-
 void Reaf::Initialize(Model* enemyModel, ViewProjection* viewProjection, const Vector3& position) {
 	assert(enemyModel);
 	reafModel_ = enemyModel;
@@ -109,6 +108,7 @@ AABB Reaf::GetAABB() {
 
 void Reaf::OnCollision(const Player* player) {
 	(void)player;
+  point_ += 1;
 	isAlive_ = false;
 	SetPositionOutOfBounds();
 }

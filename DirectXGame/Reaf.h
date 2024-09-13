@@ -3,6 +3,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include <cmath>
+#include <limits>
 #include <iostream>
 
 class Player;
@@ -17,13 +18,10 @@ public:
 	void Update();
 
 	void Draw();
-
-	//matWorld_.mの情報
 	Vector3 GetWorldPosition();
 	void SetPositionOutOfBounds();
 	//worldTransform_の情報
 	Vector3 GetPosition() { return worldTransform_.translation_; }
-	
 	AABB GetAABB();
 	void OnCollision(const Player* player);
 
@@ -32,6 +30,7 @@ public:
 	float easeInOutCubic(float x) { return x < 0.5f ? 4.0f* x * x * x : 1 - std::pow(-2.0f * x + 2.0f, 3.0f) / 2.0f; };
 	bool switchPendulum = false;
 
+	int GetPoint() { return point_; }
 	Vector3 GetSpawnPoint() { return spawnPoint_; }
 	void SetSpawnPoint(Vector3 koko) { spawnPoint_ = koko; }
 
@@ -71,5 +70,6 @@ private:
 	int spawnTimer = 0;
 	// 生成フラグ
 	bool isAlive_ = false;
+  int point_ = 0;
 };
 

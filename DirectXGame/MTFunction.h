@@ -3,6 +3,7 @@
 #include "math/Vector2.h"
 #include "Vector3f.h"
 #include "Matrix4x4.h"
+#include<assert.h>
 
 static const int kRowHeight = 20;
 static const int kColumnWidth = 60;
@@ -26,3 +27,4 @@ Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, f
 Matrix4x4 Inverse(const Matrix4x4& m);
 Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip, float farClip);
 bool IsCollision(const AABB& a, const AABB& b);
+Vector3 Transform(const Vector3& vector, const Matrix4x4& mattrix);

@@ -1,5 +1,11 @@
 #include "GameScene.h"
+#include "CameraController.h"
+#include "Ground.h"
+#include "Model.h"
+#include "Skydome.h"
 #include "TextureManager.h"
+#include "ViewProjection.h"
+#include "player.h"
 #include <cassert>
 #include "ViewProjection.h"
 #include "player.h"
@@ -31,18 +37,20 @@ void GameScene::Initialize() {
 
 	viewProjection_.Initialize();
 	worldTransform_.Initialize();
-	
+
 	debugCamera_ = new DebugCamera(1280, 720);
 	// 天球を内部的に作る
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 	skydome_ = new Skydome;
 	skydome_->Initialize(modelSkydome_, &viewProjection_);
+
 	//地面
 	ground_ = new Ground();
 	modelGround_ = Model::CreateFromOBJ("Ground", true);
 	ground_->Initialize(modelGround_, &viewProjection_);
 	//プレイヤー
 	modelPlayer_ = Model::CreateFromOBJ("Player", true);
+
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
@@ -84,6 +92,32 @@ void GameScene::Update() {
 	itemManager_->Update();
 	cameraController_->Update();
 	CheckAllCollision();
+  
+  if (player_->IsGeated()) {
+		// 自キャラの座標を取得
+		const Vector3& scoreParticlesPosition = player_->GetWorldPosition();
+
+		// 自キャラの座標にですパ初期化ｐ13
+		if (player_->oneRoop_ == true) {
+			scoreParticles_ = new Score;
+			scoreParticlesModel_ = Model::CreateFromOBJ("AL3_Enemy", true);                              // ここにスコアの演出用のモデル
+			scoreParticles_->Initialize(scoreParticlesModel_, &viewProjection_, scoreParticlesPosition); // プレイヤーの位置があってるのかｐ161
+		}
+		player_->oneRoop_ = false;
+
+		// 死亡演出切り替え
+		// phase_ = Phase::kDeath;
+		// この辺をスコアの降雨真とかを入れる感じ？多分アップデートでいいからここではない
+		scoreParticles_->Update();//こいつは外に出しちゃいけねえ
+		//スコアのポイント合計／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／////////////////
+		//for (auto* reafs : reafs_) { // 左が自分でなんでも決めれる名前、右が左にコピーする対象したのを変更したら右が（本体）変わる
+		//	scorePoint_=reafs->GetPoint();//ここにポイントがあるアイテムを足していけばいいかな？
+		//	
+		//}
+
+	}
+  
+  pointZero_->Update();
 
 	if (Input::GetInstance()->PushKey(DIK_RETURN)) {
 		finished_ = true;
@@ -117,7 +151,12 @@ void GameScene::Draw() {
 	ground_->Draw();
 	player_->Draw();
 	itemManager_->Draw();
+  
+  	if (player_->IsGeated() == true) {
+		scoreParticles_->Draw();
+	}
 
+  pointZero_->Draw();
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
@@ -173,7 +212,4 @@ void GameScene::CheckAllCollision() {
 		}
 	
 	}
-
 }
-
-
