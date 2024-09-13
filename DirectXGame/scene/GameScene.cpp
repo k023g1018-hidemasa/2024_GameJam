@@ -70,6 +70,9 @@ void GameScene::Initialize() {
 	cameraController_->Reset();
 	//音声初期化
 	BGM_ = audio_->LoadWave("relax.mp3");
+	if (audio_->IsPlaying(BGM_) == true) {
+		audio_->StopWave(BGM_);
+	}
 	audio_->PlayWave(BGM_);
 	//zeroModel_ = Model::CreateFromOBJ("0", true);
 	//Vector3 scorePosition = {-40.0f, 20.0f, 0.0f};
