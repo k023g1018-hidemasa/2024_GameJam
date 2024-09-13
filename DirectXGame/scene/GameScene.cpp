@@ -68,6 +68,15 @@ void GameScene::Initialize() {
 	// 音声初期化
 	BGM_ = audio_->LoadWave("relax.mp3");
 	audio_->PlayWave(BGM_);
+
+	//ポイントの変数は追加したからあとはこっちに加えるだけ
+    pointZero_ = new ScorePoint;
+	Vector3 scorePosition = {10, 10, 10};
+	zeroModel_ = Model::CreateFromOBJ("0",true);//まだはいってない
+	pointZero_->Initialize(zeroModel_, &viewProjection_, scorePosition);
+		
+
+
 }
 
 void GameScene::Update() {
@@ -116,8 +125,14 @@ void GameScene::Update() {
 		// phase_ = Phase::kDeath;
 		// この辺をスコアの降雨真とかを入れる感じ？多分アップデートでいいからここではない
 		scoreParticles_->Update();//こいつは外に出しちゃいけねえ
+		//スコアのポイント合計／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／／////////////////
+		//for (auto* reafs : reafs_) { // 左が自分でなんでも決めれる名前、右が左にコピーする対象したのを変更したら右が（本体）変わる
+		//	scorePoint_=reafs->GetPoint();//ここにポイントがあるアイテムを足していけばいいかな？
+		//	
+		//}
 
 	}
+		pointZero_->Update();
 }
 
 void GameScene::Draw() {
@@ -153,6 +168,7 @@ void GameScene::Draw() {
 	if (player_->IsGeated() == true) {
 		scoreParticles_->Draw();
 	}
+	pointZero_->Draw();
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>

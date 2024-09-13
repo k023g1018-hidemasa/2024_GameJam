@@ -8,6 +8,7 @@
 #include"Reaf.h"
 #include "WorldTransform.h"
 #include"score.h"
+#include"ScorePoint.h"
 
 class Model;
 class ViewProjection;
@@ -77,5 +78,10 @@ private: // メンバ変数
 	//ゲットの判定
 	Score* scoreParticles_ = nullptr;
 	Model* scoreParticlesModel_ = nullptr;
+	//int scorePoint_ = 0;
+
+	Model* zeroModel_ = nullptr;
+	ScorePoint* pointZero_ = nullptr;
+	
 
 };

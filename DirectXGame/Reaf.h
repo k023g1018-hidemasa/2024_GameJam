@@ -31,7 +31,7 @@ public:
 	float easeInOutCubic(float x) { return x < 0.5f ? 4.0f* x * x * x : 1 - std::pow(-2.0f * x + 2.0f, 3.0f) / 2.0f; };
 	bool switchPendulum = false;
 	
-
+	int GetPoint() { return point_; }
 
 
 private:
@@ -69,6 +69,7 @@ private:
 	//スポーンのタイマー
 	int spawnTimer = 0;
 
+	int point_ = 0;
 
 
 

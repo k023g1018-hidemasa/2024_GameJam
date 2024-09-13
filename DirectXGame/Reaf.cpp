@@ -113,5 +113,9 @@ AABB Reaf::GetAABB() {
 	return aabb;
 }
 
-void Reaf::OnCollision(const Player* player) { (void)player; }
+void Reaf::OnCollision(const Player* player) { 
+	(void)player; 
+	point_ += 1;
+
+}
 
