@@ -8,12 +8,12 @@
 #include "WinApp.h"
 #include "GameScene.h"
 #include "TitleScene.h"
+#include "GameOverScene.h"
 
 enum class Scene {
 	titleScene,
 	gameScene,
 	gameOverScene,
-	gameClearScene,
 	numOfScenes
 };
 
@@ -43,5 +43,6 @@ private:
 	//シーン
 	GameScene* gameScene = nullptr;
 	TitleScene* titleScene = nullptr;
+	GameOverScene* gameOverScene = nullptr;
 };
 

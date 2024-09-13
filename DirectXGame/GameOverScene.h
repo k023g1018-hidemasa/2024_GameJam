@@ -7,10 +7,11 @@ class Audio;
 class DirectXCommon;
 class Skydome;
 
-class TitleScene {
+class GameOverScene {
+
 public:
-	TitleScene();
-	~TitleScene();
+	GameOverScene() {}
+	~GameOverScene() = default;
 	/// <summary>
 	/// 
 	/// </summary>
@@ -27,15 +28,17 @@ public:
 	/// 
 	/// </summary>
 	void Rotate();
-	// デスフラグのgetter
-	bool IsGeated() const { return finished_; }
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
 	bool IsFinished() const { return finished_; }
 
 private:
 	DirectXCommon* dxCommon_ = nullptr;
 
 	const float pi = 3.14159265359f;
-	const float maxRotationZ = 15.0f * (pi / 180.0f); //45度　radian式
+	const float maxRotationZ = 15.0f * (pi / 180.0f); // 45度　radian式
 	const float maxRotationX = 10.0f * (pi / 180.0f);
 
 	// 終了フラグ

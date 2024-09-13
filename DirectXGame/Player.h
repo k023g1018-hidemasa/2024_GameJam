@@ -9,7 +9,7 @@
 #include <numbers>
 
 class Reaf;
-
+class Ringo;
 
 enum class LRDirection {
 	kRight,
@@ -24,7 +24,6 @@ enum Corner {
 
 	kNumCorner // enumの要素数ここを見ると何個あるかわかる
 };
-
 
 class Player {
 public:
@@ -55,13 +54,15 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
+	void Rotation();
 
 	Vector3 GetWorldPosition();
 	AABB GetAABB();
-	void OnCollision(const Reaf* reaf);
-	bool IsGeated() const { return isGeat_; }
+	void OnCollision(Reaf* reaf);
+	void OnCollision(Ringo* ringo);
+  
+  bool IsGeated() const { return isGeat_; }
 	bool oneRoop_ = false;//一回だけ当たり判定を通ったら通過できるように
-
 private:
 	WorldTransform worldTransform_;
 	/// <summary>
@@ -72,13 +73,9 @@ private:
 	/// <summary>
 	/// テクスチャハンドル
 	/// </summary>
-	uint32_t textureHandle_ = 0u;
-
-	
-
-	static inline const float kAcceleration = 0.2f;
-	static inline const float kAttenuation = 0.5f;
-	static inline const float kLimitRunSpeed = 1.0f;
+	static inline const float kAcceleration = 0.01f;
+	static inline const float kAttenuation = 0.03f;
+	static inline const float kLimitRunSpeed = 0.4f;
 	// 重力加速度（下方向）
 	static inline const float kGravityAccleration = 0.8f;
 	// 最大落下速度（下方向）
@@ -96,16 +93,9 @@ private:
 	static inline const float kTimeTurn = 0.3f;
 	// 接地状態フラグ
 	bool onGround_ = true;
-
-	static inline const float kWidth = 1.8f;
-	static inline const float kHeight = 1.8f;
-
-	Vector3 CornerPostion(const Vector3& center, Corner corner);
+	static inline const float kWidth = 2.0f;
+	static inline const float kHeight = 4.0f;
 	static inline const float kBlank = 0.2f; // めり込まない数値？
-	//スコアの更新、エフェクトの発生
-	bool isGeat_ = false;
-
-
-
-
+  //スコアの更新、エフェクトの発生
+  bool isGeat_ = false;
 };

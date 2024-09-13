@@ -2,13 +2,11 @@
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "numbers"
 #include <cmath>
 #include <limits>
 #include <iostream>
 
 class Player;
-class MapChipField;
 
 class Reaf {
 public:
@@ -20,9 +18,10 @@ public:
 	void Update();
 
 	void Draw();
-
-	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; };
 	Vector3 GetWorldPosition();
+	void SetPositionOutOfBounds();
+	//worldTransform_の情報
+	Vector3 GetPosition() { return worldTransform_.translation_; }
 	AABB GetAABB();
 	void OnCollision(const Player* player);
 
@@ -30,18 +29,21 @@ public:
 	//葉っぱの疑似振り子
 	float easeInOutCubic(float x) { return x < 0.5f ? 4.0f* x * x * x : 1 - std::pow(-2.0f * x + 2.0f, 3.0f) / 2.0f; };
 	bool switchPendulum = false;
-	
-	int GetPoint() { return point_; }
 
+	int GetPoint() { return point_; }
+	Vector3 GetSpawnPoint() { return spawnPoint_; }
+	void SetSpawnPoint(Vector3 koko) { spawnPoint_ = koko; }
+
+	bool GetIsAlive() { return isAlive_; }
+	void SetIsAlive(bool isAlive) { isAlive_ = isAlive; }
 
 private:
-	Model* enemyModel_ = nullptr;
+	Model* reafModel_ = nullptr;
 	WorldTransform worldTransform_;
 	ViewProjection* viewProjection_ = nullptr;
 	
 	uint32_t textureHandle_ = 0u;
 	// マップチップでフィールドを作った
-	MapChipField* mapChipField_ = nullptr;
 	static inline const float kWalkSpeed = 0.01f;
 	Vector3 verocity_ = {};
 	// 最初の角度（上向き）
@@ -63,15 +65,11 @@ private:
 	//ラープの終点
 	Vector3 targetCoordinates{};
 	//スポーンした場所（そこを中心に揺れる）
-	Vector3 spawnPoint{};
-	//スポーン関係
-	bool isSpawn[5];
+	Vector3 spawnPoint_{};
 	//スポーンのタイマー
 	int spawnTimer = 0;
-
-	int point_ = 0;
-
-
-
+	// 生成フラグ
+	bool isAlive_ = false;
+  int point_ = 0;
 };
 

@@ -282,7 +282,6 @@ bool IsCollision(const AABB& a, const AABB& b) {
 	}
 	return false;
 }
-
 Vector3 Transform(const Vector3& vector, const Matrix4x4& mattrix) { 
 		Vector3 result{};
 	result.x = vector.x * mattrix.m[0][0] + vector.y * mattrix.m[1][0] + vector.z * mattrix.m[2][0] + 1.0f * mattrix.m[3][0];

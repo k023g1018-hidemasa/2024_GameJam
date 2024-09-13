@@ -16,6 +16,8 @@ class Player;
 class Skydome;
 class Ground;
 class CameraController;
+class ItemManager;
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -46,9 +48,12 @@ public: // メンバ関数
 	/// 描画
 	/// </summary>
 	void CheckAllCollision();
+	/// <summary>
+	/// 
+	/// </summary>
 	void Draw();
 
-	
+	bool IsFinished() { return finished_; }
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -68,15 +73,12 @@ private: // メンバ変数
 	// キャラクターのテクスチャ
 	Model* modelPlayer_ = nullptr;
 	Player* player_ = nullptr;
-	//リーフのテクスチャハンドルとか
-	Model* reafModel_ = nullptr;
-	std::list<Reaf*> reafs_;
-	static inline const int32_t kReafNumber = 1;
+	ItemManager* itemManager_ = nullptr;
 	//カメラコントローラ
 	CameraController* cameraController_ = nullptr;
 	//音声用
 	uint32_t BGM_ = 0;
-
+  
 	//ゲットの判定
 	Score* scoreParticles_ = nullptr;
 	Model* scoreParticlesModel_ = nullptr;
@@ -84,7 +86,8 @@ private: // メンバ変数
 
 	Model* zeroModel_ = nullptr;
 	ScorePoint* pointZero_ = nullptr;
-	
-	
+  
+	//シーン切り替え用
+	bool finished_ = false;
 
 };

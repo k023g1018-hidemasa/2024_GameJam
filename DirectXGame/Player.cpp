@@ -1,6 +1,8 @@
 #define NOMINMAX
 #include "Player.h"
 #include <algorithm>
+#include "Ringo.h"
+#include "Reaf.h"
 
 Player::Player() {}
 
@@ -9,13 +11,13 @@ Player::~Player() {} // 未定義、参照されてないは関数の作り忘�
 void Player::Initialize(Model* model, ViewProjection* viewProjection) {
 	assert(model);
 	modelPlayer_ = model;
-	//	textureHandle_ = textureHandle;
 	worldTransform_.Initialize();
 	// 行列を定数バッファに転送//定数バッファ＝グラボ
 	viewProjection_ = viewProjection;
-	worldTransform_.translation_ = { 2.0f,2.0f,0.0f }; //modelのサイズは2.0f x 2.0fので
+	worldTransform_.translation_ = { 0.0f,3.0f,0.0f }; //modelのサイズは2.0f x 2.0fので
 	// 初期回転角の指定//Y軸を90度右に回転、2π
-	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
+	worldTransform_.rotation_ = {0.0f, 2.0f, 0.0f};
+	worldTransform_.scale_ = {2.0f, 2.0f, 2.0f};
 }
 void Player::Update() {
 	// 接地フラグ
@@ -67,26 +69,18 @@ void Player::Update() {
 				velocity_.x = 0;
 			}
 		}
-		if (Input::GetInstance()->PushKey(DIK_UP)) {
-			// ジャンプ初速
-			velocity_.y	+= kJumpAccleration;
-		}
 		// ジャンプ開始
-		if (velocity_.y > 0.0f) {
+		if (worldTransform_.translation_.y > 3.0f) {
 			// 空ちゅう状態に移行
 			onGround_ = false;
 		}
 		// 移動
 		//算術演算子が違った
-		worldTransform_.translation_.x += velocity_.x;
-		worldTransform_.translation_.y += velocity_.y;
-		worldTransform_.translation_.z += velocity_.z;
+		worldTransform_.translation_ += velocity_;
 		// 空中
 	} else {
 		// 移動
-		worldTransform_.translation_.x += velocity_.x;
-		worldTransform_.translation_.y += velocity_.y;
-		worldTransform_.translation_.z += velocity_.z;
+		worldTransform_.translation_ += velocity_;
 		// 落下速度
 		velocity_.y += -kGravityAccleration;
 		// 落下速度制限
@@ -95,13 +89,13 @@ void Player::Update() {
 		//  加工中？
 		if (velocity_.y < 0) {
 			// ｙ座標が地面いかになったら着地
-			if (worldTransform_.translation_.y <= 2.0f) {
+			if (worldTransform_.translation_.y <= 0.0f) {
 				landing = true;
 			}
 		}
 		if (landing) {
 			// めり込み排斥
-			worldTransform_.translation_.y = 2.0f;
+			worldTransform_.translation_.y = 3.0f;
 			// 摩擦で横方向速度が減衰知る
 			velocity_.x *= (1.0f - kAttenuation); // お前誰やねん
 			// 下方向速度をリセット
@@ -124,26 +118,17 @@ void Player::Update() {
 		worldTransform_.rotation_.y = destinationRotationY; // ここに角度保管
 	}
 
+	Rotation();
+
 	// 行列計算
 	worldTransform_.UpdateMatrix();
 }
 
 void Player::Draw() {
-	modelPlayer_->Draw(worldTransform_, *viewProjection_, textureHandle_);
+	modelPlayer_->Draw(worldTransform_, *viewProjection_);
 	/*ImGui::Begin("window");
 	ImGui::InputFloat3("Velocity", &velocity_.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
 	ImGui::End();*/
-}
-Vector3 Player::CornerPostion(const Vector3& center, Corner corner) {
-
-	Vector3 offsetTable[kNumCorner] = {
-	    {+kWidth / 2.0f, -kHeight / 2.0f, 0}, //  rightBottom
-	    {-kWidth / 2.0f, -kHeight / 2.0f, 0}, //  LeftBottom
-	    {+kWidth / 2.0f, +kHeight / 2.0f, 0}, //  RightTop
-	    {-kWidth / 2.0f, +kHeight / 2.0f, 0}, //  LeftTop
-	};
-
-	return center + offsetTable[static_cast<uint32_t>(corner)];
 }
 Vector3 Player::GetWorldPosition() {
 	// ワールド座標を入れる変数
@@ -155,24 +140,37 @@ Vector3 Player::GetWorldPosition() {
 
 	return worldPos;
 }
+void Player::Rotation() {
+	if (turnTimer_ > 0.0f) {
+		turnTimer_ -= 1.0f / 60.0f;
+
+		float destinationRotationYTable[] = {std::numbers::pi_v<float> / 2.0f, std::numbers::pi_v<float> / -2.0f};
+
+		float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
+		float timeRatio = 1 - turnTimer_ / kTimeTurn;
+		float easing = 1 - powf(1 - timeRatio, 2);
+		float newRotationY = std::lerp(turnFirstRotationY_, destinationRotationY, easing);
+		worldTransform_.rotation_.y = newRotationY;
+	}
+}
+
 AABB Player::GetAABB() {
-
 	Vector3 worldPos = GetWorldPosition();
-
 	AABB aabb{};
-
 	aabb.min = {worldPos.x - kWidth / 2.0f, worldPos.y - kHeight / 2.0f, worldPos.z - kWidth / 2.0f};
 	aabb.max = {worldPos.x + kWidth / 2.0f, worldPos.y + kHeight / 2.0f, worldPos.z + kWidth / 2.0f};
-
 	return aabb;
 }
-void Player::OnCollision(const Reaf* reaf) {
+void Player::OnCollision(Reaf* reaf) {
 	(void)reaf;
 	// ジャンプ開始（仮処理）
 	//isDead_ = true; //	ここで変更
-	//worldTransform_.translation_.y += 5;
-	isGeat_ = true; //	ここで変更
+	worldTransform_.translation_.y += 5.0f;
+  isGeat_ = true; //	ここで変更
 	oneRoop_ = true;
 }
 
-
+void Player::OnCollision(Ringo* ringo) {
+	(void)ringo;
+	worldTransform_.translation_.y += 5.0f;
+}

@@ -5,9 +5,9 @@ class Player;
 
 struct Rect {
 	float left = 0.0f;
-	float right = 1.0f;
+	float right = 0.0f;
 	float bottom = 0.0f;
-	float top = 1.0f;
+	float top = 0.0f;
 };
 
 /// <summary>
@@ -53,8 +53,6 @@ public:
 	/// カメラの位置をプレイヤーの位置に戻す
 	/// </summary>
 	void Reset();
-	//Vector3 GetPosition() { return viewProjection_->translation_; } 
-
 private:
 	ViewProjection* viewProjection_;
 	Vector3 targetOffset_ = { 0.0f, 0.0f, -30.0f };

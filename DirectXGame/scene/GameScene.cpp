@@ -7,6 +7,13 @@
 #include "ViewProjection.h"
 #include "player.h"
 #include <cassert>
+#include "ViewProjection.h"
+#include "player.h"
+#include "Model.h"
+#include "Skydome.h"
+#include "Ground.h"
+#include "CameraController.h"
+#include "ItemManager.h"
 
 GameScene::GameScene() {}
 
@@ -18,12 +25,8 @@ GameScene::~GameScene() {
 	delete ground_;
 	delete modelPlayer_;
 	delete player_;
-	for (auto* reafs : reafs_) { // 左が自分でなんでも決めれる名前、右が左にコピーする対象したのを変更したら右が（本体）変わる
-		delete reafs;
-	}
-	reafs_.clear();
 	delete cameraController_;
-	delete scoreParticlesModel_;
+	delete itemManager_;
 }
 
 void GameScene::Initialize() {
@@ -40,44 +43,30 @@ void GameScene::Initialize() {
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 	skydome_ = new Skydome;
 	skydome_->Initialize(modelSkydome_, &viewProjection_);
-	// 地面
+
+	//地面
 	ground_ = new Ground();
 	modelGround_ = Model::CreateFromOBJ("Ground", true);
 	ground_->Initialize(modelGround_, &viewProjection_);
-	// プレイヤー
-	modelPlayer_ = Model::Create();
+	//プレイヤー
+	modelPlayer_ = Model::CreateFromOBJ("Player", true);
+
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
 	player_->Initialize(modelPlayer_, &viewProjection_);
-
-	reafModel_ = Model::CreateFromOBJ("AL3_Enemy", true); ///////////////////////葉っぱのモデルを突っ込む
-	for (int32_t i = 0; i < kReafNumber; ++i) {
-		Reaf* newReaf = new Reaf();
-		Vector3 reafPosition = {3.0f, 10.0f + (i * 2.0f), 0.0f};
-		newReaf->Initialize(reafModel_, &viewProjection_, reafPosition);
-
-		reafs_.push_back(newReaf);
-	}
-	// カメラ初期化
+	//アイテム初期化
+	itemManager_ = new ItemManager();
+	itemManager_->Initialize(&viewProjection_);
+	//カメラ初期化
 	cameraController_ = new CameraController();
 	cameraController_->Initialize(&viewProjection_);
 	cameraController_->SetTarget(player_);
-	cameraController_->SetMovableArea({-20.0f, 20.0f, 10.0f, 60.0f});
+	cameraController_->SetMovableArea({ -10.0f, 10.0f, 10.0f,60.0f });
 	cameraController_->Reset();
-	// 音声初期化
+	//音声初期化
 	BGM_ = audio_->LoadWave("relax.mp3");
 	audio_->PlayWave(BGM_);
-
-	//ポイントの変数は追加したからあとはこっちに加えるだけ
-    pointZero_ = new ScorePoint;
-	//Vector3 scorePosition = cameraController_->GetPosition();//多分カメラに追従してくれるえ
-	Vector3 scorePosition;//これは試しに入れてる、実際に追尾したかったら上を変える
-	zeroModel_ = Model::CreateFromOBJ("0",true);//まだはいってない
-	pointZero_->Initialize(zeroModel_, &viewProjection_, scorePosition);
-		
-
-
 }
 
 void GameScene::Update() {
@@ -100,17 +89,11 @@ void GameScene::Update() {
 	skydome_->Update();
 	ground_->Update();
 	player_->Update();
-	// 敵の更新処理
-	for (auto* reafs : reafs_) { // 左が自分でなんでも決めれる名前、右が左にコピーする対象したのを変更したら右が（本体）変わる
-		reafs->Update();
-		// ここを個別にしないと一個一個に動きを付けられない
-		// 多分直結型がiを使ってこれはautoの指揮系があってそこから枝分かれ的に指示を渡してる
-		// 枝分かれの制限を渡すか渡さないかを制御すればできそう
-	}
+	itemManager_->Update();
 	cameraController_->Update();
 	CheckAllCollision();
-	// 葉っぱのゲット判定
-	if (player_->IsGeated()) {
+  
+  if (player_->IsGeated()) {
 		// 自キャラの座標を取得
 		const Vector3& scoreParticlesPosition = player_->GetWorldPosition();
 
@@ -133,7 +116,12 @@ void GameScene::Update() {
 		//}
 
 	}
-		pointZero_->Update();
+  
+  pointZero_->Update();
+
+	if (Input::GetInstance()->PushKey(DIK_RETURN)) {
+		finished_ = true;
+	}
 }
 
 void GameScene::Draw() {
@@ -162,14 +150,13 @@ void GameScene::Draw() {
 	skydome_->Draw();
 	ground_->Draw();
 	player_->Draw();
-	// 敵描画
-	for (auto* reafs : reafs_) { // 左が自分でなんでも決めれる名前、右が左にコピーする対象したのを変更したら右が（本体）変わる
-		reafs->Draw();
-	}
-	if (player_->IsGeated() == true) {
+	itemManager_->Draw();
+  
+  	if (player_->IsGeated() == true) {
 		scoreParticles_->Draw();
 	}
-	pointZero_->Draw();
+
+  pointZero_->Draw();
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
@@ -193,22 +180,36 @@ void GameScene::Draw() {
 void GameScene::CheckAllCollision() {
 
 	// 判定対象1、2の座標
-	AABB aabb1, aabb2;
+	AABB aabb1, aabb2, aabb3;
 	// 自キャラの座標
 	aabb1 = player_->GetAABB(); // ゲットはちゃんと取得してくれてるけどaabb1,2にわたってないっぽい？
 	// 自キャラと敵弾すべての当たり判定
-	for (Reaf* reafs : reafs_) {
+	for (Reaf* reafs : itemManager_->GetReafs()) {
 		// 敵弾の座標
 		aabb2 = reafs->GetAABB();
-
 		// AABB同士の考査判定
 		if (IsCollision(aabb1, aabb2)) {
 			// ぶつかった時どうするか
 			// 自キャラの衝突時コールバックを呼び出す
 			player_->OnCollision(reafs);
-			//	player_->IsDead();
+		//	player_->IsDead();
 			// 敵との衝突時コールバック呼び出し
 			reafs->OnCollision(player_);
 		}
+	}
+	for (Ringo* ringos : itemManager_->GetRingo()) {
+	
+		// 敵弾の座標
+		aabb3 = ringos->GetAABB();
+		// AABB同士の考査判定
+		if (IsCollision(aabb1, aabb3)) {
+			// ぶつかった時どうするか
+			// 自キャラの衝突時コールバックを呼び出す
+			player_->OnCollision(ringos);
+			//	player_->IsDead();
+			// 敵との衝突時コールバック呼び出し
+			ringos->OnCollision(player_);
+		}
+	
 	}
 }

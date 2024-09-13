@@ -31,5 +31,3 @@ void CameraController::Reset(){
 	const WorldTransform& targetWorldTransform = target_->GetWorldTransform();
 	viewProjection_->translation_ = Add(targetWorldTransform.translation_, targetOffset_);
 }
-
-
