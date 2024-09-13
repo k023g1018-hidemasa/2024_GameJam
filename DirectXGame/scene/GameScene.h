@@ -89,5 +89,5 @@ private: // メンバ変数
   
 	//シーン切り替え用
 	bool finished_ = false;
-
+	int score_ = 0;
 };

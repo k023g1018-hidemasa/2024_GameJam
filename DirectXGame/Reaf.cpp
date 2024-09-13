@@ -108,7 +108,7 @@ AABB Reaf::GetAABB() {
 
 void Reaf::OnCollision(const Player* player) {
 	(void)player;
-  point_ += 1;
+	point_ += 1;
 	isAlive_ = false;
 	SetPositionOutOfBounds();
 }

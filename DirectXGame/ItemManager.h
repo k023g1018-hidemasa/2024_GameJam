@@ -36,6 +36,7 @@ public:
 	std::list<Ringo*> GetRingo() { return ringos_; }
 
 	void CheckIfGround();
+	uint32_t GetGameOverCount() { return gameOverCount_; }
 
 private:
 	int32_t gameTimer_ = 0;
@@ -52,4 +53,6 @@ private:
 	Model* ringoModel_ = nullptr;
 	std::list<Ringo*> ringos_;
 	int32_t kRingoNumber = 1;
+
+	int32_t gameOverCount_ = 3;
 };

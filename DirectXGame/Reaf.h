@@ -70,6 +70,6 @@ private:
 	int spawnTimer = 0;
 	// 生成フラグ
 	bool isAlive_ = false;
-  int point_ = 0;
+	int point_ = 0;
 };
 

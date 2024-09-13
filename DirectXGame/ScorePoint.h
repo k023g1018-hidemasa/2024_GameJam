@@ -15,12 +15,12 @@ public:
 	/// <summary>
 	/// 描画処理
 	/// </summary>
-	void Draw();
+	void Draw(int score);
 	void ZeroInitialize(Model* modelZero, ViewProjection* viewProjection, const Vector3& position);
 
 	
 private:
-	Model* scorePointModel_;
+	Model* scorePointModel_ = nullptr;
 	uint32_t textureHandle_ = 0u;
 	ViewProjection* viewProjection_ = nullptr;
 	
@@ -41,12 +41,4 @@ private:
 	//ゲットしたときのポイントを足し算するため
 	Reaf* getPoint;
 	
-
-
-
-
-
-
-
-
 };

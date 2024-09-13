@@ -93,7 +93,6 @@ void SceneManager::Run() {
 void SceneManager::ChangeScene() { 
 	switch (scene) { 
 	case Scene::titleScene:
-		if (titleScene->IsGeated()) {
 		if (titleScene->IsFinished()) {
 			scene = Scene::gameScene;
 			delete titleScene;

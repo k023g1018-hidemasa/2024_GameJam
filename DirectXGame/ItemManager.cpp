@@ -115,6 +115,7 @@ void ItemManager::CheckIfGround() {
 		if (reafs->GetPosition().y <= 0.0f) {
 			reafs->SetIsAlive(false);
 			reafs->SetPositionOutOfBounds();
+			gameOverCount_ -= 1;
 		}
 	}
 
@@ -122,6 +123,8 @@ void ItemManager::CheckIfGround() {
 		if (ringos->GetPosition().y <= 0.0f) {
 			ringos->SetIsAlive(false);
 			ringos->SetPositionOutOfBounds();
+
+			gameOverCount_ -= 1;
 		}
 	}
 
