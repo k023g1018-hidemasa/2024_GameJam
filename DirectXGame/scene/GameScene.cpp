@@ -27,10 +27,10 @@ GameScene::~GameScene() {
 	delete player_;
 	delete cameraController_;
 	delete itemManager_;
-	delete scoreParticles_;
-	delete scoreParticlesModel_;
-	delete zeroModel_;
-	delete pointZero_;
+	//delete scoreParticles_;
+	//delete scoreParticlesModel_;
+	//delete zeroModel_;
+	//delete pointZero_;
 }
 
 void GameScene::Initialize() {
@@ -71,11 +71,10 @@ void GameScene::Initialize() {
 	//音声初期化
 	BGM_ = audio_->LoadWave("relax.mp3");
 	audio_->PlayWave(BGM_);
-
-	zeroModel_ = Model::CreateFromOBJ("0", true);
-	Vector3 scorePosition = {10.0f, 10.0f, 0.0f};
-	pointZero_ = new ScorePoint();
-	pointZero_->Initialize(zeroModel_, &viewProjection_, scorePosition);
+	//zeroModel_ = Model::CreateFromOBJ("0", true);
+	//Vector3 scorePosition = {-40.0f, 20.0f, 0.0f};
+	//pointZero_ = new ScorePoint();
+	//pointZero_->Initialize(zeroModel_, &viewProjection_, scorePosition);
 }
 
 void GameScene::Update() {
@@ -126,7 +125,7 @@ void GameScene::Update() {
 
 	}
   
-  pointZero_->Update();
+	//pointZero_->Update();
 
 	if (itemManager_->GetGameOverCount() <= 0) {
 		finished_ = true;
@@ -165,7 +164,7 @@ void GameScene::Draw() {
 		scoreParticles_->Draw();
 	}
 
-  pointZero_->Draw(score_);
+  //pointZero_->Draw(score_);
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
@@ -204,7 +203,6 @@ void GameScene::CheckAllCollision() {
 		//	player_->IsDead();
 			// 敵との衝突時コールバック呼び出し
 			reafs->OnCollision(player_);
-			score_ += reafs->GetPoint();
 		}
 	}
 	for (Ringo* ringos : itemManager_->GetRingo()) {

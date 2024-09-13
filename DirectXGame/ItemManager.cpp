@@ -56,7 +56,6 @@ void ItemManager::Update() {
 
 	// 地面との当たり判定
 	CheckIfGround();
-
 }
 
 void ItemManager::Draw() {
@@ -113,19 +112,13 @@ void ItemManager::RingoSpawn() {
 void ItemManager::CheckIfGround() { 
 	for (auto* reafs : reafs_) {
 		if (reafs->GetPosition().y <= 0.0f) {
-			reafs->SetIsAlive(false);
-			reafs->SetPositionOutOfBounds();
-			//gameOverCount_ -= 1;
 		}
 	}
 
 	for (auto* ringos : ringos_) {
 		if (ringos->GetPosition().y <= 0.0f) {
-			ringos->SetIsAlive(false);
-			ringos->SetPositionOutOfBounds();
-
-			//gameOverCount_ -= 1;
+			//ringos->SetIsAlive(false);
+			//ringos->SetPositionOutOfBounds();
 		}
 	}
-
 }

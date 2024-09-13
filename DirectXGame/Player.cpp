@@ -165,12 +165,12 @@ void Player::OnCollision(Reaf* reaf) {
 	(void)reaf;
 	// ジャンプ開始（仮処理）
 	//isDead_ = true; //	ここで変更
-	worldTransform_.translation_.y += 5.0f;
-  isGeat_ = true; //	ここで変更
+	//worldTransform_.translation_.y += 5.0f;
+	isGeat_ = true; //	ここで変更
 	oneRoop_ = true;
 }
 
 void Player::OnCollision(Ringo* ringo) {
 	(void)ringo;
-	worldTransform_.translation_.y += 5.0f;
+	//worldTransform_.translation_.y += 5.0f;
 }

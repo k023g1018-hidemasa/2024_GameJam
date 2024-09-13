@@ -54,5 +54,6 @@ private:
 	std::list<Ringo*> ringos_;
 	int32_t kRingoNumber = 1;
 
-	int32_t gameOverCount_ = 3;
+	int32_t gameOverCount_ = 1;
+	bool isDropped = false;
 };
