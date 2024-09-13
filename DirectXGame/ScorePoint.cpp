@@ -22,12 +22,12 @@ void ScorePoint::Initialize(Model* scorePointModel, ViewProjection* viewProjecti
 		     offset = i;
 		worldTransforms_[i].translation_.x = worldTransforms_[i].translation_.x+i;
 	}
-	//getPoint = new Reaf;
+	getPoint = new Reaf;
 }
 
 void ScorePoint::Update() {
 
-	getPoint->GetPoint();
+	
 
 
 	for (auto& worldTransform : worldTransforms_) {
