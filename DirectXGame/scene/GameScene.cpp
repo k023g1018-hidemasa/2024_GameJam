@@ -73,7 +73,7 @@ void GameScene::Initialize() {
 	audio_->PlayWave(BGM_);
 
 	zeroModel_ = Model::CreateFromOBJ("0", true);
-	Vector3 scorePosition = {-40.0f, 20.0f, 0.0f};
+	Vector3 scorePosition = {10.0f, 10.0f, 0.0f};
 	pointZero_ = new ScorePoint();
 	pointZero_->Initialize(zeroModel_, &viewProjection_, scorePosition);
 }
@@ -109,7 +109,7 @@ void GameScene::Update() {
 		// 自キャラの座標にですパ初期化ｐ13
 		if (player_->oneRoop_ == true) {
 			scoreParticles_ = new Score;
-			scoreParticlesModel_ = Model::CreateFromOBJ("AL3_Enemy", true);                              // ここにスコアの演出用のモデル
+			scoreParticlesModel_ = Model::CreateFromOBJ("hosi", true);                              // ここにスコアの演出用のモデル
 			scoreParticles_->Initialize(scoreParticlesModel_, &viewProjection_, scoreParticlesPosition); // プレイヤーの位置があってるのかｐ161
 		}
 		player_->oneRoop_ = false;
