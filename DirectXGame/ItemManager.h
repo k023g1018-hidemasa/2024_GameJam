@@ -36,7 +36,8 @@ public:
 	std::list<Ringo*> GetRingo() { return ringos_; }
 
 	void CheckIfGround();
-	uint32_t GetGameOverCount() { return gameOverCount_; }
+
+	bool IsFinished() { return finished_; }
 
 private:
 	int32_t gameTimer_ = 0;
@@ -54,6 +55,5 @@ private:
 	std::list<Ringo*> ringos_;
 	int32_t kRingoNumber = 1;
 
-	int32_t gameOverCount_ = 1;
-	bool isDropped = false;
+	bool finished_ = false;
 };

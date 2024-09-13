@@ -127,7 +127,7 @@ void GameScene::Update() {
   
 	//pointZero_->Update();
 
-	if (itemManager_->GetGameOverCount() <= 0) {
+	if (itemManager_->IsFinished() || Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		finished_ = true;
 	}
 }

@@ -35,6 +35,13 @@ void ItemManager::Update() {
 		kRingoNumber += 1;
 		RingoSpawn();
 	}
+
+	if (gameTimer_ >= 3500) {
+	
+		finished_ = true;
+	
+	}
+
 	//葉っぱの更新処理
 	for (auto* reafs : reafs_) { // 左が自分でなんでも決めれる名前、右が左にコピーする対象したのを変更したら右が（本体）変わる
 		//生成がいるなら更新
@@ -80,10 +87,10 @@ void ItemManager::ReafSpawn() {
 	newReaf->SetIsAlive(true);
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dist(-20, 20); //プレイエリアは -20.0f - 20.0f
+	std::uniform_int_distribution<> dist(-30, 30); //プレイエリアは -20.0f - 20.0f
 	int randomNumber = dist(gen);
 	//葉っぱの位置をセットする
-	newReaf->SetSpawnPoint({float(randomNumber), newReaf->GetSpawnPoint().y + 10.0f, newReaf->GetSpawnPoint().z});
+	newReaf->SetSpawnPoint({float(randomNumber), newReaf->GetSpawnPoint().y + 15.0f, newReaf->GetSpawnPoint().z});
 	//借りの変数に保留
 	Vector3 reafPosition = newReaf->GetSpawnPoint();
 	newReaf->Initialize(reafModel_, viewProjection_, reafPosition);
@@ -97,10 +104,10 @@ void ItemManager::RingoSpawn() {
 	//乱数でｘの位置を決め
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dist(-20, 20); //プレイエリアは -20.0f - 20.0f
+	std::uniform_int_distribution<> dist(-30, 30); //プレイエリアは -20.0f - 20.0f
 	int randomNumber = dist(gen);
 	//発生位置を設置する
-	newRingo->SetSpawnPoint({float(randomNumber), 10.0f, 0.0f}); //今んとこｙとｚは適当
+	newRingo->SetSpawnPoint({float(randomNumber), 20.0f, 0.0f}); //今んとこｙとｚは適当
 	//借り変数に保留
 	Vector3 ringoPosition = newRingo->GetSpawnPoint();
 	//初期化を行う
@@ -112,6 +119,8 @@ void ItemManager::RingoSpawn() {
 void ItemManager::CheckIfGround() { 
 	for (auto* reafs : reafs_) {
 		if (reafs->GetPosition().y <= 0.0f) {
+			reafs->SetIsAlive(false);
+			reafs->SetPositionOutOfBounds();
 		}
 	}
 

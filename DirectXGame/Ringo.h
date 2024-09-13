@@ -58,7 +58,7 @@ private:
 	Vector3 velocity_{};
 
 	static inline const float kGravityAcceleration = 0.008f;
-	static inline const float kLimitFallSpeed = 0.8f;
+	static inline const float kLimitFallSpeed = 0.08f;
 	static inline const float kWidth = 2.0f;
 	static inline const float kHeight = 2.0f;
 

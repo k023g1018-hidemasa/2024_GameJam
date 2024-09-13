@@ -37,7 +37,7 @@ void TitleScene::Update() {
 	worldTransform_.UpdateMatrix();
 	Rotate();
 	skydome->Update();
-	if (Input::GetInstance()->PushKey(DIK_SPACE)) {
+	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		finished_ = true;
 	}
 }
