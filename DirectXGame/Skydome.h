@@ -19,6 +19,9 @@ public:
 	/// </summary>
 	void Draw();
 private:
+
+
+
 	WorldTransform worldTransform_;
 	ViewProjection* viewProjection_ = nullptr;
 	Model* modelPlayer_= nullptr;

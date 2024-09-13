@@ -112,15 +112,10 @@ void ItemManager::RingoSpawn() {
 void ItemManager::CheckIfGround() { 
 	for (auto* reafs : reafs_) {
 		if (reafs->GetPosition().y <= 0.0f) {
-			//reafs->SetIsAlive(false);
-			//reafs->SetPositionOutOfBounds();
 		}
 	}
 
 	for (auto* ringos : ringos_) {
-
-		//if (!ringos->GetIsAlive()) { return; }
-
 		if (ringos->GetPosition().y <= 0.0f) {
 			//ringos->SetIsAlive(false);
 			//ringos->SetPositionOutOfBounds();
