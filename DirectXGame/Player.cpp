@@ -1,6 +1,8 @@
 #define NOMINMAX
 #include "Player.h"
 #include <algorithm>
+#include "Ringo.h"
+#include "Reaf.h"
 
 Player::Player() {}
 
@@ -14,7 +16,7 @@ void Player::Initialize(Model* model, ViewProjection* viewProjection) {
 	viewProjection_ = viewProjection;
 	worldTransform_.translation_ = { 0.0f,3.0f,0.0f }; //modelのサイズは2.0f x 2.0fので
 	// 初期回転角の指定//Y軸を90度右に回転、2π
-	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
+	worldTransform_.rotation_ = {0.0f, 2.0f, 0.0f};
 	worldTransform_.scale_ = {2.0f, 2.0f, 2.0f};
 }
 void Player::Update() {
@@ -74,15 +76,11 @@ void Player::Update() {
 		}
 		// 移動
 		//算術演算子が違った
-		worldTransform_.translation_.x += velocity_.x;
-		worldTransform_.translation_.y += velocity_.y;
-		worldTransform_.translation_.z += velocity_.z;
+		worldTransform_.translation_ += velocity_;
 		// 空中
 	} else {
 		// 移動
-		worldTransform_.translation_.x += velocity_.x;
-		worldTransform_.translation_.y += velocity_.y;
-		worldTransform_.translation_.z += velocity_.z;
+		worldTransform_.translation_ += velocity_;
 		// 落下速度
 		velocity_.y += -kGravityAccleration;
 		// 落下速度制限
@@ -120,6 +118,8 @@ void Player::Update() {
 		worldTransform_.rotation_.y = destinationRotationY; // ここに角度保管
 	}
 
+	Rotation();
+
 	// 行列計算
 	worldTransform_.UpdateMatrix();
 }
@@ -141,22 +141,40 @@ Vector3 Player::GetWorldPosition() {
 
 	return worldPos;
 }
+
+void Player::Rotation() {
+	if (turnTimer_ > 0.0f) {
+		turnTimer_ -= 1.0f / 60.0f;
+
+		float destinationRotationYTable[] = {std::numbers::pi_v<float> / 2.0f, std::numbers::pi_v<float> / -2.0f};
+
+		float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
+		float timeRatio = 1 - turnTimer_ / kTimeTurn;
+		float easing = 1 - powf(1 - timeRatio, 2);
+		float newRotationY = std::lerp(turnFirstRotationY_, destinationRotationY, easing);
+		worldTransform_.rotation_.y = newRotationY;
+	}
+}
+
 AABB Player::GetAABB() {
-
 	Vector3 worldPos = GetWorldPosition();
-
 	AABB aabb{};
-
 	aabb.min = {worldPos.x - kWidth / 2.0f, worldPos.y - kHeight / 2.0f, worldPos.z - kWidth / 2.0f};
 	aabb.max = {worldPos.x + kWidth / 2.0f, worldPos.y + kHeight / 2.0f, worldPos.z + kWidth / 2.0f};
-
 	return aabb;
 }
-void Player::OnCollision(const Reaf* reaf) {
+void Player::OnCollision(Reaf* reaf) {
 	(void)reaf;
 	// ジャンプ開始（仮処理）
 	//isDead_ = true; //	ここで変更
-	worldTransform_.translation_.y += 5;
+	worldTransform_.translation_.y += 5.0f;
+}
+
+void Player::OnCollision(Ringo* ringo) {
+
+	(void)ringo;
+	worldTransform_.translation_.y += 5.0f;
+
 }
 
 

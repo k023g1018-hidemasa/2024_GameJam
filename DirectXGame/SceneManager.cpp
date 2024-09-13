@@ -101,11 +101,23 @@ void SceneManager::ChangeScene() {
 			gameScene->Initialize();
 		}
 	break;
-	   case Scene::gameScene:
+	case Scene::gameScene:
+		if (gameScene->IsFinished()) {
+			scene = Scene::gameOverScene;
+			delete gameScene;
+			gameScene = nullptr;
+			gameOverScene = new GameOverScene();
+			gameOverScene->Initialize();
+		}
 	break;
-	   case Scene::gameOverScene:
-	break;
-	   case Scene::gameClearScene:
+	case Scene::gameOverScene:
+		if (gameOverScene->IsFinished()) {
+			scene = Scene::titleScene;
+			delete gameOverScene;
+			gameOverScene = nullptr;
+			titleScene = new TitleScene();
+			titleScene->Initialize();
+		}
 	break;
 	}
 }
@@ -119,10 +131,7 @@ void SceneManager::UpdateScene() {
 	gameScene->Update();
 	break;
 	case Scene::gameOverScene:
-	//gameOverScene->Update();
-	break;
-	case Scene::gameClearScene:
-	//gameClearScene->Update();
+	gameOverScene->Update();
 	break;
 	}
 }
@@ -136,10 +145,7 @@ void SceneManager::DrawScene() {
 	gameScene->Draw();
 	break;
 	case Scene::gameOverScene:
-	//gameOverScene->Draw();
-	break;
-	case Scene::gameClearScene:
-	//gameClearScene->Draw();
+	gameOverScene->Draw();
 	break;
 	}
 }

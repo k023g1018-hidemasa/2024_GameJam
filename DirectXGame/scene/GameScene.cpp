@@ -48,13 +48,13 @@ void GameScene::Initialize() {
 	// 自キャラの初期化
 	player_->Initialize(modelPlayer_, &viewProjection_);
 	//アイテム初期化
-	itemManager_ = new ItemManager(&viewProjection_);
-	itemManager_->Initialize();
+	itemManager_ = new ItemManager();
+	itemManager_->Initialize(&viewProjection_);
 	//カメラ初期化
 	cameraController_ = new CameraController();
 	cameraController_->Initialize(&viewProjection_);
 	cameraController_->SetTarget(player_);
-	cameraController_->SetMovableArea({ -20.0f, 20.0f, 10.0f,60.0f });
+	cameraController_->SetMovableArea({ -10.0f, 10.0f, 10.0f,60.0f });
 	cameraController_->Reset();
 	//音声初期化
 	BGM_ = audio_->LoadWave("relax.mp3");
@@ -84,6 +84,10 @@ void GameScene::Update() {
 	itemManager_->Update();
 	cameraController_->Update();
 	CheckAllCollision();
+
+	if (Input::GetInstance()->PushKey(DIK_RETURN)) {
+		finished_ = true;
+	}
 }
 
 void GameScene::Draw() {
@@ -137,14 +141,13 @@ void GameScene::Draw() {
 void GameScene::CheckAllCollision() {
 
 	// 判定対象1、2の座標
-	AABB aabb1, aabb2;
+	AABB aabb1, aabb2, aabb3;
 	// 自キャラの座標
 	aabb1 = player_->GetAABB(); // ゲットはちゃんと取得してくれてるけどaabb1,2にわたってないっぽい？
 	// 自キャラと敵弾すべての当たり判定
 	for (Reaf* reafs : itemManager_->GetReafs()) {
 		// 敵弾の座標
 		aabb2 = reafs->GetAABB();
-
 		// AABB同士の考査判定
 		if (IsCollision(aabb1, aabb2)) {
 			// ぶつかった時どうするか
@@ -153,10 +156,24 @@ void GameScene::CheckAllCollision() {
 		//	player_->IsDead();
 			// 敵との衝突時コールバック呼び出し
 			reafs->OnCollision(player_);
-
-		
 		}
 	}
+	for (Ringo* ringos : itemManager_->GetRingo()) {
+	
+		// 敵弾の座標
+		aabb3 = ringos->GetAABB();
+		// AABB同士の考査判定
+		if (IsCollision(aabb1, aabb3)) {
+			// ぶつかった時どうするか
+			// 自キャラの衝突時コールバックを呼び出す
+			player_->OnCollision(ringos);
+			//	player_->IsDead();
+			// 敵との衝突時コールバック呼び出し
+			ringos->OnCollision(player_);
+		}
+	
+	}
+
 }
 
 

@@ -3,6 +3,8 @@
 #include <cmath>
 #include <fstream>
 #include <vector>
+#include <numbers>
+#include <limits>
 
 Reaf::Reaf() {}
 
@@ -18,11 +20,9 @@ Vector3 Lerp(const Vector3& a, const Vector3& b, float t) { // イージング�
 	return resurt;
 }
 
-
-
 void Reaf::Initialize(Model* enemyModel, ViewProjection* viewProjection, const Vector3& position) {
 	assert(enemyModel);
-	enemyModel_ = enemyModel;
+	reafModel_ = enemyModel;
 	worldTransform_.Initialize();
 	viewProjection_ = viewProjection;
 	worldTransform_.translation_ = position; // ここで場所を代入している
@@ -33,8 +33,7 @@ void Reaf::Initialize(Model* enemyModel, ViewProjection* viewProjection, const V
 	wolkTimer_ = 0.0f;
 
 	/// 葉っぱの振り子
-	spawnPoint = worldTransform_.translation_;
-	
+	spawnPoint_ = worldTransform_.translation_;
 }
 
 void Reaf::Update() {
@@ -46,29 +45,26 @@ void Reaf::Update() {
 	// 
 	// //羽っぽい動き
 	// 座標保管 targetCoordinates//開始位置から終点まで
-	if (spawnPoint.x + targetOffset_.x <= worldTransform_.translation_.x+3) {//45より場所が大きいとき//スポーンした位置から15-3離れた位置から交代
+	if (spawnPoint_.x + targetOffset_.x <= worldTransform_.translation_.x+3) {//45より場所が大きいとき//スポーンした位置から15-3離れた位置から交代
 		switchPendulum = false;
-	} else if (spawnPoint.x - targetOffset_.x >= worldTransform_.translation_.x-3) {//25より小さいとき
+	} else if (spawnPoint_.x - targetOffset_.x >= worldTransform_.translation_.x-3) {//25より小さいとき
 		switchPendulum = true;
 	}
 	if (switchPendulum == true) {
 		//ここはｘだけ計算
-		if (spawnPoint.x<=worldTransform_.translation_.x) {
-		worldTransform_.translation_ = Lerp(worldTransform_.translation_, Vector3{spawnPoint.x+targetOffset_.x , spawnPoint.y-targetOffset_.y, spawnPoint.z}, easeInOutCubic(kInterpolationRate));
+		if (spawnPoint_.x<=worldTransform_.translation_.x) {
+		worldTransform_.translation_ = Lerp(worldTransform_.translation_, Vector3{spawnPoint_.x+targetOffset_.x , spawnPoint_.y-targetOffset_.y, spawnPoint_.z}, easeInOutCubic(kInterpolationRate));
 		} else {
-		worldTransform_.translation_ = Lerp(worldTransform_.translation_, Vector3{spawnPoint.x+targetOffset_.x,spawnPoint.y+targetOffset_.y,spawnPoint.z} , easeInOutCubic(kInterpolationRate));
+		worldTransform_.translation_ = Lerp(worldTransform_.translation_, Vector3{spawnPoint_.x+targetOffset_.x,spawnPoint_.y+targetOffset_.y,spawnPoint_.z} , easeInOutCubic(kInterpolationRate));
 		}
 	
 	} else if (switchPendulum == false) {
-		if (spawnPoint.x >= worldTransform_.translation_.x) {
-		worldTransform_.translation_ = Lerp(worldTransform_.translation_, Vector3{spawnPoint.x - targetOffset_.x, spawnPoint.y-targetOffset_.y, spawnPoint.z}, easeInOutCubic(kInterpolationRate));	
+		if (spawnPoint_.x >= worldTransform_.translation_.x) {
+		worldTransform_.translation_ = Lerp(worldTransform_.translation_, Vector3{spawnPoint_.x - targetOffset_.x, spawnPoint_.y-targetOffset_.y, spawnPoint_.z}, easeInOutCubic(kInterpolationRate));	
 		} else {
-			worldTransform_.translation_ = Lerp(worldTransform_.translation_, Vector3{spawnPoint.x - targetOffset_.x, spawnPoint.y + targetOffset_.y, spawnPoint.z}, easeInOutCubic(kInterpolationRate));
+			worldTransform_.translation_ = Lerp(worldTransform_.translation_, Vector3{spawnPoint_.x - targetOffset_.x, spawnPoint_.y + targetOffset_.y, spawnPoint_.z}, easeInOutCubic(kInterpolationRate));
 		}
 	}
-	
-
-
 	//worldTransform_.translation_ += verocity_;
 	wolkTimer_ += 1.0f / 60.0f;
 	// 回転アニメーション
@@ -77,19 +73,17 @@ void Reaf::Update() {
 	float param = std::sin((2 * 3.14f) * wolkTimer_ / kWalkMotionTime);
 	float radian = kWalkMotionAngleStart + kWalkMotionAngleEnd * (param + 1.0f) / 2.0f;
 	worldTransform_.rotation_.x = radian * 3.14f / 360.0f; // よくわからん
-	if (spawnTimer >= 60) {
-	}
+	worldTransform_.rotation_.z = radian * 3.14f / 360.0f;
 	//otiru
 	worldTransform_.translation_.y += verocity_.y;
 	//スポーンポイントを下げる
-	spawnPoint.y += verocity_.y;
-
-
+	spawnPoint_.y += verocity_.y;
 	// 多分アップデートマトリクスがワールド行列の更新？
 	worldTransform_.UpdateMatrix(); // これを通ったらアフィンとかを通るからアップデートにはこれが必要
 }
 
-void Reaf::Draw() { enemyModel_->Draw(worldTransform_, *viewProjection_, textureHandle_); }
+void Reaf::Draw() { reafModel_->Draw(worldTransform_, *viewProjection_); }
+
 Vector3 Reaf::GetWorldPosition() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
@@ -97,27 +91,19 @@ Vector3 Reaf::GetWorldPosition() {
 	worldPos.x = worldTransform_.matWorld_.m[3][0];
 	worldPos.y = worldTransform_.matWorld_.m[3][1];
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
-
 	return worldPos;
 }
 
 void Reaf::SetPositionOutOfBounds() { 
-	/*worldTransform_.matWorld_.m[3][0] = 0.0f;
-	worldTransform_.matWorld_.m[3][1] = 1000.0f;
-	worldTransform_.matWorld_.m[3][2] = 0.0f;*/
-	spawnPoint = {0.0f, -100.0f, 0.0f};
+	spawnPoint_ = {0.0f, -100.0f, 0.0f};
 	worldTransform_.translation_ = {0.0f, -100.0f, 0.0f};
 }
 
 AABB Reaf::GetAABB() {
-
 	Vector3 worldPos = GetWorldPosition();
-
 	AABB aabb;
-
 	aabb.min = {worldPos.x - kWidth / 2.0f, worldPos.y - kHeight / 2.0f, worldPos.z - kWidth / 2.0f};
 	aabb.max = {worldPos.x + kWidth / 2.0f, worldPos.y + kHeight / 2.0f, worldPos.z + kWidth / 2.0f};
-
 	return aabb;
 }
 

@@ -46,7 +46,13 @@ public: // メンバ関数
 	/// 描画
 	/// </summary>
 	void CheckAllCollision();
+	/// <summary>
+	/// 
+	/// </summary>
 	void Draw();
+
+	bool IsFinished() { return finished_; }
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -71,4 +77,6 @@ private: // メンバ変数
 	CameraController* cameraController_ = nullptr;
 	//音声用
 	uint32_t BGM_ = 0;
+	//シーン切り替え用
+	bool finished_ = false;
 };

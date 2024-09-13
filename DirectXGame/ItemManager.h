@@ -2,9 +2,10 @@
 #include "WorldTransform.h"
 #include "ViewProjection.h"
 #include <list>
+#include "Ringo.h"
+#include "Reaf.h"
 
 class Model;
-class Reaf;
 
 enum class Phase {
 	easy,
@@ -16,23 +17,29 @@ enum class Phase {
 class ItemManager 
 {
 public:
-	ItemManager(ViewProjection* viewProjection) { viewProjection_ = viewProjection; };
+	ItemManager() {}
 	~ItemManager();
 
-	void Initialize();
+	void Initialize(ViewProjection* viewProjection);
 	void Update();
 	void Draw();
 	/// <summary>
 	/// 葉っぱ
 	/// </summary>
 	void ReafSpawn();
+	/// <summary>
+	/// リンゴ
+	/// </summary>
+	void RingoSpawn();
+	
 	std::list<Reaf*> GetReafs() { return reafs_; }
+	std::list<Ringo*> GetRingo() { return ringos_; }
 
 	void CheckIfGround();
 
 private:
-	int32_t gameTimer_;
-	Phase phase_ = Phase::easy;
+	int32_t gameTimer_ = 0;
+	//Phase phase_ = Phase::easy;
 
 	ViewProjection* viewProjection_;
 	WorldTransform worldTransfrom_;
@@ -41,4 +48,8 @@ private:
 	Model* reafModel_ = nullptr;
 	std::list<Reaf*> reafs_;
 	int32_t kReafNumber = 1;
+
+	Model* ringoModel_ = nullptr;
+	std::list<Ringo*> ringos_;
+	int32_t kRingoNumber = 1;
 };

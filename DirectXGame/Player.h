@@ -9,6 +9,7 @@
 #include <numbers>
 
 class Reaf;
+class Ringo;
 
 enum class LRDirection {
 	kRight,
@@ -54,10 +55,12 @@ public:
 	/// <returns></returns>
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 
+	void Rotation();
+
 	Vector3 GetWorldPosition();
 	AABB GetAABB();
-	void OnCollision(const Reaf* reaf);
-
+	void OnCollision(Reaf* reaf);
+	void OnCollision(Ringo* ringo);
 
 private:
 	WorldTransform worldTransform_;
@@ -70,9 +73,9 @@ private:
 	/// テクスチャハンドル
 	/// </summary>
 
-	static inline const float kAcceleration = 0.2f;
-	static inline const float kAttenuation = 0.5f;
-	static inline const float kLimitRunSpeed = 1.0f;
+	static inline const float kAcceleration = 0.01f;
+	static inline const float kAttenuation = 0.03f;
+	static inline const float kLimitRunSpeed = 0.4f;
 	// 重力加速度（下方向）
 	static inline const float kGravityAccleration = 0.8f;
 	// 最大落下速度（下方向）
