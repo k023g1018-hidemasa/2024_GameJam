@@ -71,7 +71,8 @@ void GameScene::Initialize() {
 
 	//ポイントの変数は追加したからあとはこっちに加えるだけ
     pointZero_ = new ScorePoint;
-	Vector3 scorePosition = {10, 10, 10};
+	//Vector3 scorePosition = cameraController_->GetPosition();//多分カメラに追従してくれるえ
+	Vector3 scorePosition;//これは試しに入れてる、実際に追尾したかったら上を変える
 	zeroModel_ = Model::CreateFromOBJ("0",true);//まだはいってない
 	pointZero_->Initialize(zeroModel_, &viewProjection_, scorePosition);
 		

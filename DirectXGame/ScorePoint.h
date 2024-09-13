@@ -3,7 +3,7 @@
 #include "Vector3.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-
+#include"Reaf.h"
 
 class ScorePoint {
 public:
@@ -23,6 +23,7 @@ private:
 	Model* scorePointModel_;
 	uint32_t textureHandle_ = 0u;
 	ViewProjection* viewProjection_ = nullptr;
+	
 	// スコアの個数
 	static inline const uint32_t kNumScores = 4;
 
@@ -33,11 +34,13 @@ private:
 	ObjectColor objectColor_;
 	// 色の数値
 	Vector4 color_;
-	int scorePoint_= 0;
+//	int scorePoint_= 0;
 
 	Model* zeloModel_;
 	uint32_t countTextureHandle;
-
+	//ゲットしたときのポイントを足し算するため
+	Reaf* getPoint;
+	
 
 
 

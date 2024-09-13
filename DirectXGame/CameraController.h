@@ -53,6 +53,8 @@ public:
 	/// カメラの位置をプレイヤーの位置に戻す
 	/// </summary>
 	void Reset();
+	//Vector3 GetPosition() { return viewProjection_->translation_; } 
+
 private:
 	ViewProjection* viewProjection_;
 	Vector3 targetOffset_ = { 0.0f, 0.0f, -30.0f };

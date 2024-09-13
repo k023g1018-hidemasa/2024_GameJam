@@ -47,6 +47,8 @@ public: // メンバ関数
 	/// </summary>
 	void CheckAllCollision();
 	void Draw();
+
+	
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -82,6 +84,7 @@ private: // メンバ変数
 
 	Model* zeroModel_ = nullptr;
 	ScorePoint* pointZero_ = nullptr;
+	
 	
 
 };
